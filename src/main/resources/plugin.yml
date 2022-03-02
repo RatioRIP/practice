@@ -1,0 +1,4 @@
+name: 'Ratio'
+version: '${version}'
+main: 'cc.ratio.practice.Practice'
+description: 'Practice at its finest'

@@ -11,7 +11,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Optional;
 
-public class SetKitInventoryHandler implements FunctionalCommandHandler<Player> {
+public class SetKitDisplayHandler implements FunctionalCommandHandler<Player> {
 
     public final KitRepository kitRepository = Services.get(KitRepository.class).get();
 
@@ -27,10 +27,7 @@ public class SetKitInventoryHandler implements FunctionalCommandHandler<Player> 
         } else {
             Kit kit = optional.get();
 
-            PlayerInventory inventory = c.sender().getInventory();
-
-            kit.contents = inventory.getContents();
-            kit.armor = inventory.getArmorContents();
+            kit.display = c.sender().getItemInHand();
 
             c.reply("Kit '" + kit.name + "' modified");
         }

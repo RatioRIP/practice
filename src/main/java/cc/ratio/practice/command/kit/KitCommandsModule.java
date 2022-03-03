@@ -2,6 +2,7 @@ package cc.ratio.practice.command.kit;
 
 import cc.ratio.practice.command.kit.handler.DeleteKitCommandHandler;
 import cc.ratio.practice.command.kit.handler.NewKitCommandHandler;
+import cc.ratio.practice.command.kit.handler.SetKitDisplayHandler;
 import cc.ratio.practice.command.kit.handler.SetKitInventoryHandler;
 import me.lucko.helper.Commands;
 import me.lucko.helper.terminable.TerminableConsumer;
@@ -32,6 +33,13 @@ public class KitCommandsModule implements TerminableModule {
                 .description("Sets the inventory of a kit")
                 .handler(new SetKitInventoryHandler())
                 .registerAndBind(consumer, "setkitinventory");
+
+        Commands.create()
+                .assertPlayer()
+                .assertUsage("<name>")
+                .description("Sets the display item of a kit")
+                .handler(new SetKitDisplayHandler())
+                .registerAndBind(consumer, "setkitdisplay");
 
     }
 }

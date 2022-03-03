@@ -17,7 +17,6 @@ public class NewKitCommandHandler implements FunctionalCommandHandler<Player> {
 
     @Override
     public void handle(CommandContext<Player> c) throws CommandInterruptException {
-        c.arg(0).assertPresent();
         String name = c.arg(0).parseOrFail(String.class);
 
         if(kitRepository.find(name).isPresent()) {

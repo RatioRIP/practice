@@ -16,7 +16,6 @@ public class DeleteKitCommandHandler implements FunctionalCommandHandler<Player>
 
     @Override
     public void handle(CommandContext<Player> c) throws CommandInterruptException {
-        c.arg(0).assertPresent();
         String name = c.arg(0).parseOrFail(String.class);
 
         Optional<Kit> optional = kitRepository.find(name);

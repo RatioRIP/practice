@@ -12,6 +12,7 @@ public class KitCommandsModule implements TerminableModule {
     public void setup(@Nonnull TerminableConsumer consumer) {
         Commands.create()
                 .assertPlayer()
+                .assertPermission("command.kit")
                 .assertUsage("<name>")
                 .description("Creates a kit")
                 .handler(new NewKitCommandHandler())
@@ -19,6 +20,7 @@ public class KitCommandsModule implements TerminableModule {
 
         Commands.create()
                 .assertPlayer()
+                .assertPermission("command.kit")
                 .assertUsage("<name>")
                 .description("Deletes a kit")
                 .handler(new DeleteKitCommandHandler())
@@ -26,6 +28,7 @@ public class KitCommandsModule implements TerminableModule {
 
         Commands.create()
                 .assertPlayer()
+                .assertPermission("command.kit")
                 .assertUsage("<name>")
                 .description("Sets the inventory of a kit")
                 .handler(new SetKitInventoryHandler())
@@ -33,6 +36,7 @@ public class KitCommandsModule implements TerminableModule {
 
         Commands.create()
                 .assertPlayer()
+                .assertPermission("command.kit")
                 .assertUsage("<name>")
                 .description("Sets the display item of a kit")
                 .handler(new SetKitDisplayHandler())
@@ -40,6 +44,7 @@ public class KitCommandsModule implements TerminableModule {
 
         Commands.create()
                 .assertPlayer()
+                .assertPermission("command.kit")
                 .assertUsage("<name> [value]")
                 .description("Sets value of the build option of a kit")
                 .handler(new SetKitBuildHandler())
@@ -47,9 +52,17 @@ public class KitCommandsModule implements TerminableModule {
 
         Commands.create()
                 .assertPlayer()
+                .assertPermission("command.kit")
                 .assertUsage("<name> [value]")
                 .description("Sets value of the ranked option of a kit")
                 .handler(new SetKitRankedHandler())
                 .registerAndBind(consumer, "setkitranked");
+
+        Commands.create()
+                .assertPlayer()
+                .assertPermission("command.kit")
+                .description("Lists kits")
+                .handler(new SetKitRankedHandler())
+                .registerAndBind(consumer, "listkits");
     }
 }

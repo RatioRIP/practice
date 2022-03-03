@@ -1,5 +1,7 @@
 package cc.ratio.practice;
 
+import cc.ratio.practice.arena.ArenaRepository;
+import cc.ratio.practice.command.arena.ArenaCommandsModule;
 import cc.ratio.practice.command.kit.KitCommandsModule;
 import cc.ratio.practice.event.environment.EnvironmentListener;
 import cc.ratio.practice.kit.KitRepository;
@@ -35,10 +37,13 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
         this.provideService(ConfigurationSection.class, this.getConfig());
 
         this.provideService(KitRepository.class, new KitRepository());
+        this.provideService(ArenaRepository.class, new ArenaRepository());
         this.provideService(ProfileRepository.class, new ProfileRepository());
 
-        this.bindModule(new EnvironmentListener());
         this.bindModule(new KitCommandsModule());
+        this.bindModule(new ArenaCommandsModule());
+
+        this.bindModule(new EnvironmentListener());
     }
 
     @Override

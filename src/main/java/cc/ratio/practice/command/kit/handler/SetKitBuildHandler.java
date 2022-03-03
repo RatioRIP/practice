@@ -36,6 +36,7 @@ public class SetKitBuildHandler implements FunctionalCommandHandler<Player> {
             }
 
             kit.build = value;
+            this.kitRepository.save();
 
             c.reply("Option &ebuild &r" + (kit.build ? "&aenabled" : "&cdisabled"));
             c.reply("Kit '" + kit.name + "' modified");

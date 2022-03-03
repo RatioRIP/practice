@@ -28,6 +28,7 @@ public class SetKitDisplayHandler implements FunctionalCommandHandler<Player> {
             Kit kit = optional.get();
 
             kit.display = c.sender().getItemInHand();
+            this.kitRepository.save();
 
             c.reply("Kit '" + kit.name + "' modified");
         }

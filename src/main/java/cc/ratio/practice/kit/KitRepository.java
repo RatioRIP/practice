@@ -30,6 +30,7 @@ public class KitRepository implements Repository<Kit, String> {
         boolean result = this.kits.add(kit);
 
         this.storageHandler.save(this.kits);
+        this.save();
 
         return result;
     }
@@ -39,6 +40,7 @@ public class KitRepository implements Repository<Kit, String> {
         boolean result = this.kits.remove(kit);
 
         this.storageHandler.save(this.kits);
+        this.save();
 
         return result;
     }
@@ -48,4 +50,7 @@ public class KitRepository implements Repository<Kit, String> {
         return this.kits.stream().filter(kit -> kit.name.equalsIgnoreCase(identifier)).findFirst();
     }
 
+    public void save() {
+        this.storageHandler.save(this.kits);
+    }
 }

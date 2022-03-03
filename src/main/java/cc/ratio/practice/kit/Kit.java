@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 public class Kit {
 
     public String name;
-    public boolean build;
+    public boolean build, ranked;
     public ItemStack display;
     public ItemStack[] contents, armor;
 

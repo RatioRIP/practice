@@ -36,6 +36,7 @@ public class SetKitRankedHandler implements FunctionalCommandHandler<Player> {
             }
 
             kit.ranked = value;
+            this.kitRepository.save();
 
             c.reply("Option &eranked &r" + (kit.build ? "&aenabled" : "&cdisabled"));
             c.reply("Kit '" + kit.name + "' modified");

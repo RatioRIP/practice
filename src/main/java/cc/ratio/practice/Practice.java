@@ -37,8 +37,8 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
         this.provideService(KitRepository.class, new KitRepository());
         this.provideService(ProfileRepository.class, new ProfileRepository());
 
-        bindModule(new EnvironmentListener());
-        bindModule(new KitCommandsModule());
+        this.bindModule(new EnvironmentListener());
+        this.bindModule(new KitCommandsModule());
     }
 
     @Override

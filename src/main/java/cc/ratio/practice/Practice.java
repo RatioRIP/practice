@@ -4,8 +4,10 @@ import cc.ratio.practice.arena.ArenaRepository;
 import cc.ratio.practice.command.arena.ArenaCommandsModule;
 import cc.ratio.practice.command.kit.KitCommandsModule;
 import cc.ratio.practice.event.environment.EnvironmentListener;
+import cc.ratio.practice.event.lobby.LobbyListener;
 import cc.ratio.practice.kit.KitRepository;
 import cc.ratio.practice.profile.ProfileRepository;
+import cc.ratio.practice.queue.QueueRepository;
 import me.lucko.helper.mongo.Mongo;
 import me.lucko.helper.mongo.MongoDatabaseCredentials;
 import me.lucko.helper.mongo.MongoProvider;
@@ -39,11 +41,13 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
         this.provideService(KitRepository.class, new KitRepository());
         this.provideService(ArenaRepository.class, new ArenaRepository());
         this.provideService(ProfileRepository.class, new ProfileRepository());
+        this.provideService(QueueRepository.class, new QueueRepository());
 
         this.bindModule(new KitCommandsModule());
         this.bindModule(new ArenaCommandsModule());
 
         this.bindModule(new EnvironmentListener());
+        this.bindModule(new LobbyListener());
     }
 
     @Override

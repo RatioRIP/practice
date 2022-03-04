@@ -16,7 +16,7 @@ public class QueueGui extends Gui {
     private final boolean ranked;
 
     public QueueGui(Player player, boolean ranked) {
-        super(player, 3, ranked ? "Ranked" : "Unranked" + " Queue");
+        super(player, 3, (ranked ? "Ranked" : "Unranked") + " Queue");
 
         this.ranked = ranked;
     }

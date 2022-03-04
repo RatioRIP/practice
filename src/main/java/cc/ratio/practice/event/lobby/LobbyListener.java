@@ -12,7 +12,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
 
 import javax.annotation.Nonnull;
 
@@ -34,6 +35,27 @@ public class LobbyListener implements TerminableModule {
 
         Events.subscribe(FoodLevelChangeEvent.class)
                 .filter(event -> repository.find(event.getEntity().getUniqueId()).get().state == ProfileState.LOBBY)
+                .handler(event -> event.setCancelled(true))
+                .bindWith(consumer);
+
+        Events.subscribe(PlayerItemDamageEvent.class)
+                .filter(event -> repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
+                .handler(event -> event.setCancelled(true))
+                .bindWith(consumer);
+
+        Events.subscribe(PlayerDropItemEvent.class)
+                .filter(event -> repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
+                .handler(event -> event.setCancelled(true))
+                .bindWith(consumer);
+
+        Events.subscribe(PlayerPickupItemEvent.class)
+                .filter(event -> repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
+                .handler(event -> event.setCancelled(true))
+                .bindWith(consumer);
+
+        Events.subscribe(InventoryClickEvent.class)
+                .filter(event -> repository.find(event.getWhoClicked().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> event.getClickedInventory().equals(event.getInventory()))
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 

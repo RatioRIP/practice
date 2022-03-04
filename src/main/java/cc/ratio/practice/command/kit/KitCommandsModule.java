@@ -15,7 +15,7 @@ public class KitCommandsModule implements TerminableModule {
                 .assertPermission("command.kit")
                 .assertUsage("<name>")
                 .description("Creates a kit")
-                .handler(new NewKitCommandHandler())
+                .handler(new NewKitHandler())
                 .registerAndBind(consumer, "newkit");
 
         Commands.create()
@@ -23,7 +23,7 @@ public class KitCommandsModule implements TerminableModule {
                 .assertPermission("command.kit")
                 .assertUsage("<name>")
                 .description("Deletes a kit")
-                .handler(new DeleteKitCommandHandler())
+                .handler(new DeleteKitHandler())
                 .registerAndBind(consumer, "deletekit", "removekit");
 
         Commands.create()
@@ -62,7 +62,16 @@ public class KitCommandsModule implements TerminableModule {
                 .assertPlayer()
                 .assertPermission("command.kit")
                 .description("Lists kits")
-                .handler(new SetKitRankedHandler())
+                .handler(new ListKitsHandler())
                 .registerAndBind(consumer, "listkits");
+
+        Commands.create()
+                .assertPlayer()
+                .assertPermission("command.kit")
+                .assertUsage("<kit>")
+                .description("View a kits inventory")
+                .handler(new ViewKitInventoryHandler())
+                .registerAndBind(consumer, "viewkitinventory");
+
     }
 }

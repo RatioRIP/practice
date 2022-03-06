@@ -20,8 +20,8 @@ public class LobbyItems {
             .build();
 
     public static final Map<Integer, ItemStack> ITEMS = new HashMap<Integer, ItemStack>() {{
-        put(0, UNRANKED_QUEUE_ITEM);
-        put(1, RANKED_QUEUE_ITEM);
+        this.put(0, UNRANKED_QUEUE_ITEM);
+        this.put(1, RANKED_QUEUE_ITEM);
     }};
 
 }

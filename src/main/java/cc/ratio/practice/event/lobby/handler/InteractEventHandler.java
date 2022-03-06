@@ -10,9 +10,9 @@ import java.util.function.Consumer;
 
 public class InteractEventHandler implements Consumer<PlayerInteractEvent> {
     @Override
-    public void accept(PlayerInteractEvent playerInteractEvent) {
-        Player player = playerInteractEvent.getPlayer();
-        ItemStack item = playerInteractEvent.getPlayer().getItemInHand();
+    public void accept(final PlayerInteractEvent playerInteractEvent) {
+        final Player player = playerInteractEvent.getPlayer();
+        final ItemStack item = playerInteractEvent.getPlayer().getItemInHand();
 
         if (item.isSimilar(LobbyItems.UNRANKED_QUEUE_ITEM)) {
             new QueueGui(player, false).open();

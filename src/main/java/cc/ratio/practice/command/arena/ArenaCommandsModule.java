@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 
 public class ArenaCommandsModule implements TerminableModule {
     @Override
-    public void setup(@Nonnull TerminableConsumer consumer) {
+    public void setup(@Nonnull final TerminableConsumer consumer) {
         Commands.create()
                 .assertPlayer()
                 .assertPermission("command.arena")

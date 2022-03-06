@@ -29,7 +29,7 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
         this.saveDefaultConfig();
 
         this.credentials = MongoDatabaseCredentials.fromConfig(this.getConfig());
-        this.dataSource = getMongo(this.credentials);
+        this.dataSource = this.getMongo(this.credentials);
         this.dataSource.bindWith(this);
 
         this.provideService(MongoProvider.class, this);
@@ -56,7 +56,7 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
     }
 
     @Override
-    public Mongo getMongo(MongoDatabaseCredentials credentials) {
+    public Mongo getMongo(final MongoDatabaseCredentials credentials) {
         return new HelperMongo(credentials);
     }
 

@@ -15,22 +15,22 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
     public final ArenaRepository arenaRepository = Services.get(ArenaRepository.class).get();
 
     @Override
-    public void handle(CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
         c.arg(0).assertPresent();
         c.arg(1).assertPresent();
 
-        String name = c.arg(0).parseOrFail(String.class);
+        final String name = c.arg(0).parseOrFail(String.class);
 
-        Optional<Arena> optional = arenaRepository.find(name);
+        final Optional<Arena> optional = this.arenaRepository.find(name);
 
         if (!optional.isPresent()) {
             c.reply("&cArena doesn't exist");
             return;
         }
 
-        Arena arena = optional.get();
+        final Arena arena = optional.get();
 
-        String subcommand = c.arg(1).parseOrFail(String.class);
+        final String subcommand = c.arg(1).parseOrFail(String.class);
 
         if (subcommand.equalsIgnoreCase("list")) {
             c.reply("&c" + arena.name + " spawnpoints:");
@@ -42,7 +42,7 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
 
         if (subcommand.equalsIgnoreCase("add")) {
             arena.spawnpoints.add(c.sender().getLocation());
-            arenaRepository.save();
+            this.arenaRepository.save();
 
             c.reply("Arena '" + arena.name + "' modified");
             return;
@@ -50,10 +50,10 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
 
         if (subcommand.equalsIgnoreCase("delete")) {
             c.arg(2).assertPresent();
-            int index = c.arg(2).parseOrFail(Integer.class);
+            final int index = c.arg(2).parseOrFail(Integer.class);
 
             arena.spawnpoints.remove(index);
-            arenaRepository.save();
+            this.arenaRepository.save();
 
             c.reply("Arena '" + arena.name + "' modified");
             return;

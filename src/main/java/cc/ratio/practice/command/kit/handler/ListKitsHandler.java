@@ -17,17 +17,17 @@ public class ListKitsHandler implements FunctionalCommandHandler<Player> {
     public final KitRepository kitRepository = Services.get(KitRepository.class).get();
 
     @Override
-    public void handle(CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
         c.reply("&cKits:");
-        kitRepository.kits.forEach(kit -> {
-            TextComponent clickComponent = TextComponent.builder()
+        this.kitRepository.kits.forEach(kit -> {
+            final TextComponent clickComponent = TextComponent.builder()
                     .content("(Click to view)")
                     .color(TextColor.GRAY)
                     .hoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.of("Click to view the kit's contents").color(TextColor.RED)))
                     .clickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/viewkitinventory " + kit.name))
                     .build();
 
-            TextComponent component = TextComponent.builder()
+            final TextComponent component = TextComponent.builder()
                     .content("  - ")
                     .append(TextComponent.of(kit.name + " ").color(TextColor.GREEN))
                     .append(clickComponent)

@@ -28,7 +28,7 @@ public class Kit {
     public Kit() {
     }
 
-    public Kit(String name) {
+    public Kit(final String name) {
         this.name = name;
     }
 

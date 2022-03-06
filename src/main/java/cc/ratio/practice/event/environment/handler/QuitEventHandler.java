@@ -12,8 +12,8 @@ public class QuitEventHandler implements Consumer<PlayerQuitEvent> {
     private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
 
     @Override
-    public void accept(PlayerQuitEvent playerQuitEvent) {
-        Profile profile = this.repository.find(playerQuitEvent.getPlayer().getUniqueId()).get();
+    public void accept(final PlayerQuitEvent playerQuitEvent) {
+        final Profile profile = this.repository.find(playerQuitEvent.getPlayer().getUniqueId()).get();
 
         profile.save();
         this.repository.remove(profile);

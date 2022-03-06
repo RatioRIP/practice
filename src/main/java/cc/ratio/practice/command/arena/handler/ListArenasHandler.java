@@ -12,9 +12,9 @@ public class ListArenasHandler implements FunctionalCommandHandler<Player> {
     public final ArenaRepository arenaRepository = Services.get(ArenaRepository.class).get();
 
     @Override
-    public void handle(CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
         c.reply("&cArenas:");
-        arenaRepository.arenas.forEach(arena -> {
+        this.arenaRepository.arenas.forEach(arena -> {
             c.reply("  - &a" + arena.name);
         });
     }

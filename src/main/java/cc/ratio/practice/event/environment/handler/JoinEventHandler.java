@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 public class JoinEventHandler implements Consumer<PlayerJoinEvent> {
 
-    private final static String[] WELCOME_MESSAGE = new String[]{
+    private static final String[] WELCOME_MESSAGE = {
             "Welcome to &4&lRatio",
             "",
             "&cWebsite: &fhttps://ratio.cc/",
@@ -24,12 +24,12 @@ public class JoinEventHandler implements Consumer<PlayerJoinEvent> {
     private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
 
     @Override
-    public void accept(PlayerJoinEvent playerJoinEvent) {
-        Player player = playerJoinEvent.getPlayer();
+    public void accept(final PlayerJoinEvent playerJoinEvent) {
+        final Player player = playerJoinEvent.getPlayer();
 
         this.repository.put(new Profile(playerJoinEvent.getPlayer().getUniqueId()));
 
-        for (String line : WELCOME_MESSAGE) {
+        for (final String line : WELCOME_MESSAGE) {
             player.sendMessage(Text.colorize(line));
         }
 

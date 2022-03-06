@@ -16,21 +16,21 @@ public class NewKitHandler implements FunctionalCommandHandler<Player> {
     public final KitRepository kitRepository = Services.get(KitRepository.class).get();
 
     @Override
-    public void handle(CommandContext<Player> c) throws CommandInterruptException {
-        String name = c.arg(0).parseOrFail(String.class);
+    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+        final String name = c.arg(0).parseOrFail(String.class);
 
-        if (kitRepository.find(name).isPresent()) {
+        if (this.kitRepository.find(name).isPresent()) {
             c.reply("&cKit already exists");
             return;
         } else {
-            Kit kit = new Kit(name);
+            final Kit kit = new Kit(name);
 
             kit.contents = new ItemStack[]{};
             kit.armor = new ItemStack[]{};
             kit.display = ItemStackBuilder.of(Material.DEAD_BUSH).build();
             kit.build = false;
 
-            kitRepository.put(kit);
+            this.kitRepository.put(kit);
             c.reply("Created Kit '" + name + "'");
         }
     }

@@ -16,7 +16,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(UUID uuid) {
+    public Account(final UUID uuid) {
         this.uuid = uuid;
     }
 

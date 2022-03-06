@@ -17,13 +17,13 @@ public class EnvironmentListener implements TerminableModule {
     private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
 
     @Override
-    public void setup(@Nonnull TerminableConsumer consumer) {
+    public void setup(@Nonnull final TerminableConsumer consumer) {
         Events.subscribe(PlayerJoinEvent.class)
                 .handler(new JoinEventHandler())
                 .bindWith(consumer);
 
         Events.subscribe(PlayerQuitEvent.class)
-                .filter(event -> repository.find(event.getPlayer().getUniqueId()).isPresent())
+                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).isPresent())
                 .handler(new QuitEventHandler())
                 .bindWith(consumer);
 

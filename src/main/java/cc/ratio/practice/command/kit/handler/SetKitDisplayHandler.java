@@ -15,19 +15,19 @@ public class SetKitDisplayHandler implements FunctionalCommandHandler<Player> {
     public final KitRepository kitRepository = Services.get(KitRepository.class).get();
 
     @Override
-    public void handle(CommandContext<Player> c) throws CommandInterruptException {
-        String name = c.arg(0).parseOrFail(String.class);
+    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+        final String name = c.arg(0).parseOrFail(String.class);
 
-        Optional<Kit> optional = kitRepository.find(name);
+        final Optional<Kit> optional = this.kitRepository.find(name);
 
         if (!optional.isPresent()) {
             c.reply("&cKit doesn't exist");
             return;
         } else {
-            Kit kit = optional.get();
+            final Kit kit = optional.get();
 
             kit.display = c.sender().getItemInHand();
-            kitRepository.save(kit);
+            this.kitRepository.save(kit);
 
             c.reply("Kit '" + kit.name + "' modified");
         }

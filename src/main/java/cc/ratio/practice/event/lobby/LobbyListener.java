@@ -27,53 +27,53 @@ public class LobbyListener implements TerminableModule {
     private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
 
     @Override
-    public void setup(@Nonnull TerminableConsumer consumer) {
+    public void setup(@Nonnull final TerminableConsumer consumer) {
         Events.subscribe(BlockBreakEvent.class)
-                .filter(event -> repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(BlockPlaceEvent.class)
-                .filter(event -> repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(FoodLevelChangeEvent.class)
-                .filter(event -> repository.find(event.getEntity().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> this.repository.find(event.getEntity().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(PlayerItemDamageEvent.class)
-                .filter(event -> repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(PlayerDropItemEvent.class)
-                .filter(event -> repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(PlayerPickupItemEvent.class)
-                .filter(event -> repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(InventoryClickEvent.class)
-                .filter(event -> repository.find(event.getWhoClicked().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> this.repository.find(event.getWhoClicked().getUniqueId()).get().state == ProfileState.LOBBY)
                 .filter(event -> event.getClickedInventory().equals(event.getInventory()))
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(EntityDamageEvent.class)
                 .filter(event -> event.getEntityType() == EntityType.PLAYER)
-                .filter(event -> repository.find(event.getEntity().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> this.repository.find(event.getEntity().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(PlayerInteractEvent.class)
                 .filter(event -> event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
                 .filter(event -> event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() != Material.AIR)
-                .filter(event -> repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
+                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(new InteractEventHandler())
                 .bindWith(consumer);
     }

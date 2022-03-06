@@ -16,7 +16,7 @@ public class Profile {
 
     public ProfileState state;
 
-    public Profile(UUID uuid) {
+    public Profile(final UUID uuid) {
         this.uuid = uuid;
         this.state = ProfileState.LOBBY;
 
@@ -24,8 +24,8 @@ public class Profile {
     }
 
     public Account loadAccount() {
-        Mongo mongo = Services.get(Mongo.class).get();
-        Datastore datastore = mongo.getMorphiaDatastore();
+        final Mongo mongo = Services.get(Mongo.class).get();
+        final Datastore datastore = mongo.getMorphiaDatastore();
 
         Account account = datastore.find(Account.class)
                 .filter("uuid", this.uuid)
@@ -48,8 +48,8 @@ public class Profile {
 
 
     public void save() {
-        Mongo mongo = Services.get(Mongo.class).get();
-        Datastore datastore = mongo.getMorphiaDatastore();
+        final Mongo mongo = Services.get(Mongo.class).get();
+        final Datastore datastore = mongo.getMorphiaDatastore();
 
         datastore.save(this.account);
     }

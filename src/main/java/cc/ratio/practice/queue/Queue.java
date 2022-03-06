@@ -11,7 +11,7 @@ public class Queue {
     public final boolean ranked;
     public final ArrayList<UUID> players;
 
-    public Queue(Kit kit, boolean ranked) {
+    public Queue(final Kit kit, final boolean ranked) {
         this.kit = kit;
         this.ranked = ranked;
         this.players = new ArrayList<>();

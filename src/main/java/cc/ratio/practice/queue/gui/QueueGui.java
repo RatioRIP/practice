@@ -14,7 +14,7 @@ public class QueueGui extends Gui {
     private final boolean ranked;
     public QueueRepository queueRepository = Services.get(QueueRepository.class).get();
 
-    public QueueGui(Player player, boolean ranked) {
+    public QueueGui(final Player player, final boolean ranked) {
         super(player, 3, (ranked ? "Ranked" : "Unranked") + " Queue");
 
         this.ranked = ranked;
@@ -22,18 +22,18 @@ public class QueueGui extends Gui {
 
     @Override
     public void redraw() {
-        queueRepository.queues
+        this.queueRepository.queues
                 .stream()
                 .filter(queue -> queue.ranked == this.ranked)
                 .forEach(queue -> {
-                    Kit kit = queue.kit;
-                    ItemStack itemStack = ItemStackBuilder.of(queue.kit.display)
+                    final Kit kit = queue.kit;
+                    final ItemStack itemStack = ItemStackBuilder.of(queue.kit.display)
                             .name("&a" + kit.name)
                             .build();
 
-                    Item item = Item.builder(itemStack)
+                    final Item item = Item.builder(itemStack)
                             .bind(() -> {
-                                this.getPlayer().sendMessage("You should be joining the " + (ranked ? "Ranked" : "Unranked") + " " + kit.name + " queue.");
+                                this.getPlayer().sendMessage("You should be joining the " + (this.ranked ? "Ranked" : "Unranked") + " " + kit.name + " queue.");
                             })
                             .build();
 

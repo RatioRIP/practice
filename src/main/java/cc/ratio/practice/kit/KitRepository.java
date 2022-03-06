@@ -12,8 +12,8 @@ public class KitRepository implements Repository<Kit, String> {
 
     public final ArrayList<Kit> kits;
 
-    private Mongo mongo = Services.get(Mongo.class).get();
-    private Datastore datastore = mongo.getMorphiaDatastore();
+    private final Mongo mongo = Services.get(Mongo.class).get();
+    private final Datastore datastore = this.mongo.getMorphiaDatastore();
 
     public KitRepository() {
         this.kits = new ArrayList<>();
@@ -26,8 +26,8 @@ public class KitRepository implements Repository<Kit, String> {
     }
 
     @Override
-    public boolean put(Kit kit) {
-        boolean result = this.kits.add(kit);
+    public boolean put(final Kit kit) {
+        final boolean result = this.kits.add(kit);
 
         this.datastore.save(kit);
 
@@ -35,8 +35,8 @@ public class KitRepository implements Repository<Kit, String> {
     }
 
     @Override
-    public boolean remove(Kit kit) {
-        boolean result = this.kits.remove(kit);
+    public boolean remove(final Kit kit) {
+        final boolean result = this.kits.remove(kit);
 
         this.datastore.delete(kit);
 
@@ -44,11 +44,11 @@ public class KitRepository implements Repository<Kit, String> {
     }
 
     @Override
-    public Optional<Kit> find(String identifier) {
+    public Optional<Kit> find(final String identifier) {
         return this.kits.stream().filter(kit -> kit.name.equalsIgnoreCase(identifier)).findFirst();
     }
 
-    public void save(Kit kit) {
+    public void save(final Kit kit) {
         this.datastore.save(kit);
     }
 }

@@ -15,17 +15,17 @@ public class DeleteArenaHandler implements FunctionalCommandHandler<Player> {
     public final ArenaRepository arenaRepository = Services.get(ArenaRepository.class).get();
 
     @Override
-    public void handle(CommandContext<Player> c) throws CommandInterruptException {
-        String name = c.arg(0).parseOrFail(String.class);
+    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+        final String name = c.arg(0).parseOrFail(String.class);
 
-        Optional<Arena> optional = arenaRepository.find(name);
+        final Optional<Arena> optional = this.arenaRepository.find(name);
 
         if (!optional.isPresent()) {
             c.reply("&cArena doesn't exist");
             return;
         } else {
-            Arena arena = optional.get();
-            arenaRepository.remove(arena);
+            final Arena arena = optional.get();
+            this.arenaRepository.remove(arena);
             c.reply("Deleted Arena '" + name + "'");
         }
     }

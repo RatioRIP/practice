@@ -15,17 +15,17 @@ public class NewArenaHandler implements FunctionalCommandHandler<Player> {
     public final ArenaRepository arenaRepository = Services.get(ArenaRepository.class).get();
 
     @Override
-    public void handle(CommandContext<Player> c) throws CommandInterruptException {
-        String name = c.arg(0).parseOrFail(String.class);
+    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+        final String name = c.arg(0).parseOrFail(String.class);
 
-        if (arenaRepository.find(name).isPresent()) {
+        if (this.arenaRepository.find(name).isPresent()) {
             c.reply("&cArena already exists");
         } else {
-            Arena arena = new Arena(name);
+            final Arena arena = new Arena(name);
 
             arena.spawnpoints = new ArrayList<>();
 
-            arenaRepository.put(arena);
+            this.arenaRepository.put(arena);
             c.reply("Created Arena '" + name + "'");
         }
     }

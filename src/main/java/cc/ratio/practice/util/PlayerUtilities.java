@@ -6,7 +6,7 @@ import org.bukkit.potion.PotionEffect;
 
 public class PlayerUtilities {
 
-    public static void reset(Player player) {
+    public static void reset(final Player player) {
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
         player.setExp(0);

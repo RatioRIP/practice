@@ -23,8 +23,8 @@ public class InventoryUtil {
     public static final List<Material> LEGGINS_MATERIALS = Arrays.asList(Material.DIAMOND_LEGGINGS, Material.IRON_LEGGINGS, Material.CHAINMAIL_LEGGINGS, Material.GOLD_LEGGINGS, Material.LEATHER_LEGGINGS);
     public static final List<Material> BOOTS_MATERIALS = Arrays.asList(Material.DIAMOND_BOOTS, Material.IRON_BOOTS, Material.CHAINMAIL_BOOTS, Material.GOLD_BOOTS, Material.LEATHER_BOOTS);
 
-    public static ItemStack[] fixInventoryOrder(ItemStack[] source) {
-        ItemStack[] fixed = new ItemStack[36];
+    public static ItemStack[] fixInventoryOrder(final ItemStack[] source) {
+        final ItemStack[] fixed = new ItemStack[36];
 
         System.arraycopy(source, 0, fixed, 27, 9);
         System.arraycopy(source, 9, fixed, 0, 27);
@@ -32,10 +32,10 @@ public class InventoryUtil {
         return fixed;
     }
 
-    public static String serializeInventory(ItemStack[] source) {
-        StringBuilder builder = new StringBuilder();
+    public static String serializeInventory(final ItemStack[] source) {
+        final StringBuilder builder = new StringBuilder();
 
-        for (ItemStack itemStack : source) {
+        for (final ItemStack itemStack : source) {
             builder.append(serializeItemStack(itemStack));
             builder.append(";");
         }
@@ -43,39 +43,39 @@ public class InventoryUtil {
         return builder.toString();
     }
 
-    public static ItemStack[] deserializeInventory(String source) {
-        List<ItemStack> items = new ArrayList<>();
-        String[] split = source.split(";");
+    public static ItemStack[] deserializeInventory(final String source) {
+        final List<ItemStack> items = new ArrayList<>();
+        final String[] split = source.split(";");
 
-        for (String piece : split) {
+        for (final String piece : split) {
             items.add(deserializeItemStack(piece));
         }
 
         return items.toArray(new ItemStack[0]);
     }
 
-    public static String serializeItemStack(ItemStack item) {
-        StringBuilder builder = new StringBuilder();
+    public static String serializeItemStack(final ItemStack item) {
+        final StringBuilder builder = new StringBuilder();
 
         if (item == null) {
             return "null";
         }
 
-        String isType = String.valueOf(item.getType().getId());
+        final String isType = String.valueOf(item.getType().getId());
         builder.append("t@").append(isType);
 
         if (item.getDurability() != 0) {
-            String isDurability = String.valueOf(item.getDurability());
+            final String isDurability = String.valueOf(item.getDurability());
             builder.append(":d@").append(isDurability);
         }
 
         if (item.getAmount() != 1) {
-            String isAmount = String.valueOf(item.getAmount());
+            final String isAmount = String.valueOf(item.getAmount());
             builder.append(":a@").append(isAmount);
         }
 
         if (item.hasItemMeta()) {
-            ItemMeta itemMeta = item.getItemMeta();
+            final ItemMeta itemMeta = item.getItemMeta();
 
             if (itemMeta.hasDisplayName()) {
                 builder.append(":dn@").append(itemMeta.getDisplayName());
@@ -86,22 +86,22 @@ public class InventoryUtil {
             }
 
             if (itemMeta.hasEnchants()) {
-                Map<Enchantment, Integer> enchantments = item.getItemMeta().getEnchants();
+                final Map<Enchantment, Integer> enchantments = item.getItemMeta().getEnchants();
 
-                for (Map.Entry<Enchantment, Integer> enchantment : enchantments.entrySet()) {
+                for (final Map.Entry<Enchantment, Integer> enchantment : enchantments.entrySet()) {
                     builder.append(":e@").append(enchantment.getKey().getId()).append("@").append(enchantment.getValue());
                 }
             }
         }
 
         if (item.getType() == Material.POTION) {
-            Potion potion = Potion.fromItemStack(item);
+            final Potion potion = Potion.fromItemStack(item);
 
             builder.append(":pd@")
                     .append(potion.getType().getDamageValue())
                     .append("-")
                     .append(potion.getLevel());
-            for (PotionEffect effect : potion.getEffects()) {
+            for (final PotionEffect effect : potion.getEffects()) {
                 builder.append("=")
                         .append(effect.getType().getId())
                         .append("-")
@@ -116,12 +116,12 @@ public class InventoryUtil {
                 (item.getType() == Material.LEATHER_LEGGINGS) ||
                 (item.getType() == Material.LEATHER_BOOTS) &&
                         (item.hasItemMeta())) {
-            LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+            final LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
             builder.append(":lc@").append(meta.getColor().asRGB());
         }
 
         if ((item.getType() == Material.BOOK_AND_QUILL) || (item.getType() == Material.WRITTEN_BOOK) && (item.hasItemMeta())) {
-            BookMeta meta = (BookMeta) item.getItemMeta();
+            final BookMeta meta = (BookMeta) item.getItemMeta();
             if (meta.hasAuthor()) {
                 builder.append(":ba@").append(meta.getAuthor());
             }
@@ -134,9 +134,9 @@ public class InventoryUtil {
         }
 
         if ((item.getType() == Material.ENCHANTED_BOOK) && (item.hasItemMeta())) {
-            EnchantmentStorageMeta meta = (EnchantmentStorageMeta) item.getItemMeta();
+            final EnchantmentStorageMeta meta = (EnchantmentStorageMeta) item.getItemMeta();
             if (meta.hasStoredEnchants()) {
-                for (Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
+                for (final Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
                     builder.append(":esm@").append(entry.getKey().getId()).append("@").append(entry.getValue());
                 }
             }
@@ -145,7 +145,7 @@ public class InventoryUtil {
         return builder.toString();
     }
 
-    public static ItemStack deserializeItemStack(String in) {
+    public static ItemStack deserializeItemStack(final String in) {
         ItemStack item = null;
         ItemMeta meta = null;
 
@@ -153,11 +153,11 @@ public class InventoryUtil {
             return new ItemStack(Material.AIR);
         }
 
-        String[] split = in.split(":");
+        final String[] split = in.split(":");
 
-        for (String itemInfo : split) {
-            String[] itemAttribute = itemInfo.split("@");
-            String attributeId = itemAttribute[0];
+        for (final String itemInfo : split) {
+            final String[] itemAttribute = itemInfo.split("@");
+            final String attributeId = itemAttribute[0];
 
             switch (attributeId) {
                 case "t": {
@@ -200,7 +200,7 @@ public class InventoryUtil {
                 case "l": {
                     itemAttribute[1] = itemAttribute[1].replace("[", "");
                     itemAttribute[1] = itemAttribute[1].replace("]", "");
-                    List<String> lore = Arrays.asList(itemAttribute[1].split(",,"));
+                    final List<String> lore = Arrays.asList(itemAttribute[1].split(",,"));
 
                     for (int x = 0; x < lore.size(); ++x) {
                         String s = lore.get(x);
@@ -224,19 +224,19 @@ public class InventoryUtil {
                 }
                 case "pd": {
                     if (item != null && item.getType() == Material.POTION) {
-                        String[] effectsList = itemAttribute[1].split("=");
-                        String[] potionData = effectsList[0].split("-");
+                        final String[] effectsList = itemAttribute[1].split("=");
+                        final String[] potionData = effectsList[0].split("-");
 
-                        Potion potion = new Potion(PotionType.getByDamageValue(Integer.parseInt(potionData[0])),
+                        final Potion potion = new Potion(PotionType.getByDamageValue(Integer.parseInt(potionData[0])),
                                 Integer.parseInt(potionData[1]));
                         potion.setSplash(item.getDurability() >= 16000);
 
-                        PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+                        final PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
 
                         for (int i = 1; i < effectsList.length; i++) {
-                            String[] effectData = effectsList[1].split("-");
+                            final String[] effectData = effectsList[1].split("-");
 
-                            PotionEffect potionEffect = new PotionEffect(PotionEffectType.getById(
+                            final PotionEffect potionEffect = new PotionEffect(PotionEffectType.getById(
                                     Integer.valueOf(effectData[0])), Double.valueOf(effectData[1]).intValue(),
                                     Integer.valueOf(effectData[2]), false
                             );
@@ -252,7 +252,7 @@ public class InventoryUtil {
                 }
                 case "lc": {
                     if (meta != null) {
-                        LeatherArmorMeta armorMeta = (LeatherArmorMeta) item.getItemMeta();
+                        final LeatherArmorMeta armorMeta = (LeatherArmorMeta) item.getItemMeta();
                         armorMeta.setColor(Color.fromRGB(Integer.valueOf(itemAttribute[1])));
                         item.setItemMeta(armorMeta);
                     }
@@ -260,7 +260,7 @@ public class InventoryUtil {
                 }
                 case "ba": {
                     if (meta != null) {
-                        BookMeta bookMeta = (BookMeta) item.getItemMeta();
+                        final BookMeta bookMeta = (BookMeta) item.getItemMeta();
                         bookMeta.setAuthor(itemAttribute[1]);
                         item.setItemMeta(bookMeta);
                     }
@@ -268,7 +268,7 @@ public class InventoryUtil {
                 }
                 case "bt": {
                     if (meta != null) {
-                        BookMeta bookMeta = (BookMeta) item.getItemMeta();
+                        final BookMeta bookMeta = (BookMeta) item.getItemMeta();
                         bookMeta.setTitle(itemAttribute[1]);
                         item.setItemMeta(bookMeta);
                     }
@@ -277,7 +277,7 @@ public class InventoryUtil {
                 case "bp": {
                     itemAttribute[1] = itemAttribute[1].replace("[", "");
                     itemAttribute[1] = itemAttribute[1].replace("]", "");
-                    List<String> pages = Arrays.asList(itemAttribute[1].split(",,"));
+                    final List<String> pages = Arrays.asList(itemAttribute[1].split(",,"));
 
                     for (int x = 0; x < pages.size(); ++x) {
                         String s = pages.get(x);
@@ -294,7 +294,7 @@ public class InventoryUtil {
                     }
 
                     if (meta != null) {
-                        BookMeta bookMeta = (BookMeta) item.getItemMeta();
+                        final BookMeta bookMeta = (BookMeta) item.getItemMeta();
                         bookMeta.setPages(pages);
                         item.setItemMeta(bookMeta);
                         break;
@@ -303,7 +303,7 @@ public class InventoryUtil {
                 }
                 case "esm": {
                     if (meta != null) {
-                        EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) item.getItemMeta();
+                        final EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) item.getItemMeta();
                         storageMeta.addStoredEnchant(
                                 Enchantment.getById(Integer.valueOf(itemAttribute[1])),
                                 Integer.valueOf(itemAttribute[2]),
@@ -324,7 +324,7 @@ public class InventoryUtil {
         return item;
     }
 
-    public static void removeCrafting(Material material) {
+    public static void removeCrafting(final Material material) {
         //Iterator<Recipe> iterator = ILib.getInstance().getServer().recipeIterator();
 
         /*while (iterator.hasNext()) {
@@ -335,35 +335,35 @@ public class InventoryUtil {
         }*/
     }
 
-    public static boolean isHelmet(Material material) {
+    public static boolean isHelmet(final Material material) {
         return HELMET_MATERIALS.contains(material);
     }
 
-    public static boolean isHelmet(ItemStack itemStack) {
+    public static boolean isHelmet(final ItemStack itemStack) {
         return isHelmet(itemStack.getType());
     }
 
-    public static boolean isChestplate(Material material) {
+    public static boolean isChestplate(final Material material) {
         return CHESTPLATE_MATERIALS.contains(material);
     }
 
-    public static boolean isChestplate(ItemStack itemStack) {
+    public static boolean isChestplate(final ItemStack itemStack) {
         return isChestplate(itemStack.getType());
     }
 
-    public static boolean isLeggings(Material material) {
+    public static boolean isLeggings(final Material material) {
         return LEGGINS_MATERIALS.contains(material);
     }
 
-    public static boolean isLeggings(ItemStack itemStack) {
+    public static boolean isLeggings(final ItemStack itemStack) {
         return isLeggings(itemStack.getType());
     }
 
-    public static boolean isBoots(Material material) {
+    public static boolean isBoots(final Material material) {
         return BOOTS_MATERIALS.contains(material);
     }
 
-    public static boolean isBoots(ItemStack itemStack) {
+    public static boolean isBoots(final ItemStack itemStack) {
         return isBoots(itemStack.getType());
     }
 

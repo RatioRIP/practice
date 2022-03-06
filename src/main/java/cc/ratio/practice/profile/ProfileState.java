@@ -5,6 +5,6 @@ public enum ProfileState {
     LOBBY,
     QUEUE,
     PLAYING,
-    SPECTATING;
+    SPECTATING
 
 }

@@ -11,7 +11,7 @@ public class Arena {
     public Region region;
     public List<Location> spawnpoints;
 
-    public Arena(String name) {
+    public Arena(final String name) {
         this.name = name;
     }
 

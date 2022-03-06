@@ -15,17 +15,17 @@ public class ProfileRepository implements Repository<Profile, UUID> {
     }
 
     @Override
-    public boolean put(Profile profile) {
+    public boolean put(final Profile profile) {
         return this.profiles.add(profile);
     }
 
     @Override
-    public boolean remove(Profile profile) {
+    public boolean remove(final Profile profile) {
         return this.profiles.remove(profile);
     }
 
     @Override
-    public Optional<Profile> find(UUID identifier) {
+    public Optional<Profile> find(final UUID identifier) {
         return this.profiles.stream().filter(profile -> profile.uuid == identifier).findFirst();
     }
 

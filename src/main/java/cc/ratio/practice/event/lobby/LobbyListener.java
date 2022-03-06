@@ -8,6 +8,7 @@ import me.lucko.helper.Services;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -61,6 +62,7 @@ public class LobbyListener implements TerminableModule {
                 .bindWith(consumer);
 
         Events.subscribe(EntityDamageEvent.class)
+                .filter(event -> event.getEntityType() == EntityType.PLAYER)
                 .filter(event -> repository.find(event.getEntity().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);

@@ -14,8 +14,6 @@ import java.util.function.Consumer;
 
 public class JoinEventHandler implements Consumer<PlayerJoinEvent> {
 
-    private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
-
     private final static String[] WELCOME_MESSAGE = new String[]{
             "Welcome to &4&lRatio",
             "",
@@ -23,6 +21,7 @@ public class JoinEventHandler implements Consumer<PlayerJoinEvent> {
             "&dDiscord: &fhttps://discord.ratio.cc/",
             "&bTwitter: &fhttps://twitter.com/RatioCC/"
     };
+    private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
 
     @Override
     public void accept(PlayerJoinEvent playerJoinEvent) {

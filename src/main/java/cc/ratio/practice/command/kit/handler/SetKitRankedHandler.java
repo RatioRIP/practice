@@ -21,7 +21,7 @@ public class SetKitRankedHandler implements FunctionalCommandHandler<Player> {
 
         Optional<Kit> optional = kitRepository.find(name);
 
-        if(!optional.isPresent()) {
+        if (!optional.isPresent()) {
             c.reply("&cKit doesn't exist");
             return;
         } else {
@@ -31,7 +31,7 @@ public class SetKitRankedHandler implements FunctionalCommandHandler<Player> {
 
             Argument valueArgument = c.arg(1);
 
-            if(valueArgument.isPresent()) {
+            if (valueArgument.isPresent()) {
                 value = valueArgument.parseOrFail(Boolean.class);
             }
 

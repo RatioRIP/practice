@@ -18,9 +18,8 @@ public class NewArenaHandler implements FunctionalCommandHandler<Player> {
     public void handle(CommandContext<Player> c) throws CommandInterruptException {
         String name = c.arg(0).parseOrFail(String.class);
 
-        if(arenaRepository.find(name).isPresent()) {
+        if (arenaRepository.find(name).isPresent()) {
             c.reply("&cArena already exists");
-            return;
         } else {
             Arena arena = new Arena(name);
 

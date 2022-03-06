@@ -14,12 +14,12 @@ public class InteractEventHandler implements Consumer<PlayerInteractEvent> {
         Player player = playerInteractEvent.getPlayer();
         ItemStack item = playerInteractEvent.getPlayer().getItemInHand();
 
-        if(item.isSimilar(LobbyItems.UNRANKED_QUEUE_ITEM)) {
+        if (item.isSimilar(LobbyItems.UNRANKED_QUEUE_ITEM)) {
             new QueueGui(player, false).open();
             return;
         }
 
-        if(item.isSimilar(LobbyItems.RANKED_QUEUE_ITEM)) {
+        if (item.isSimilar(LobbyItems.RANKED_QUEUE_ITEM)) {
             new QueueGui(player, true).open();
             return;
         }

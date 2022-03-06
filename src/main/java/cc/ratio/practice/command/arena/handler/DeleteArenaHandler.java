@@ -20,7 +20,7 @@ public class DeleteArenaHandler implements FunctionalCommandHandler<Player> {
 
         Optional<Arena> optional = arenaRepository.find(name);
 
-        if(!optional.isPresent()) {
+        if (!optional.isPresent()) {
             c.reply("&cArena doesn't exist");
             return;
         } else {

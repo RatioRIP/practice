@@ -19,7 +19,8 @@ public class ArenaRepository implements Repository<Arena, String> {
                 "arenas",
                 ".json",
                 Practice.instance.getDataFolder(),
-                new TypeToken<List<Arena>>() {}
+                new TypeToken<List<Arena>>() {
+                }
         );
 
         this.arenas = this.storageHandler.load().orElseGet(() -> new ArrayList());

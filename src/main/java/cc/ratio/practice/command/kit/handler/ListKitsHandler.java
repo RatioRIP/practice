@@ -21,11 +21,11 @@ public class ListKitsHandler implements FunctionalCommandHandler<Player> {
         c.reply("&cKits:");
         kitRepository.kits.forEach(kit -> {
             TextComponent clickComponent = TextComponent.builder()
-                .content("(Click to view)")
-                .color(TextColor.GRAY)
-                .hoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.of("Click to view the kit's contents").color(TextColor.RED)))
-                .clickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/viewkitinventory " + kit.name))
-                .build();
+                    .content("(Click to view)")
+                    .color(TextColor.GRAY)
+                    .hoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.of("Click to view the kit's contents").color(TextColor.RED)))
+                    .clickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/viewkitinventory " + kit.name))
+                    .build();
 
             TextComponent component = TextComponent.builder()
                     .content("  - ")

@@ -23,7 +23,7 @@ public class ViewKitInventoryHandler implements FunctionalCommandHandler<Player>
 
         Optional<Kit> optional = kitRepository.find(name);
 
-        if(!optional.isPresent()) {
+        if (!optional.isPresent()) {
             c.reply("&cKit doesn't exist");
             return;
         } else {
@@ -35,7 +35,7 @@ public class ViewKitInventoryHandler implements FunctionalCommandHandler<Player>
                     {
                         int i = 0;
                         for (ItemStack item : kit.contents) {
-                            if(item != null) {
+                            if (item != null) {
                                 this.setItem(i, Item.builder(item).build());
                             }
                             i++;
@@ -45,7 +45,7 @@ public class ViewKitInventoryHandler implements FunctionalCommandHandler<Player>
                     {
                         int i = 6 * 9 - 4;
                         for (ItemStack item : kit.armor) {
-                            if(item != null) {
+                            if (item != null) {
                                 this.setItem(i, Item.builder(item).build());
                             }
                             i++;

@@ -23,7 +23,7 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
 
         Optional<Arena> optional = arenaRepository.find(name);
 
-        if(!optional.isPresent()) {
+        if (!optional.isPresent()) {
             c.reply("&cArena doesn't exist");
             return;
         }
@@ -32,7 +32,7 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
 
         String subcommand = c.arg(1).parseOrFail(String.class);
 
-        if(subcommand.equalsIgnoreCase("list")) {
+        if (subcommand.equalsIgnoreCase("list")) {
             c.reply("&c" + arena.name + " spawnpoints:");
             arena.spawnpoints.forEach(location -> {
                 c.reply(arena.spawnpoints.indexOf(location) + " - &c(" + location.getX() + ", " + location.getY() + ", " + location.getZ() + ")");
@@ -40,7 +40,7 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
             return;
         }
 
-        if(subcommand.equalsIgnoreCase("add")) {
+        if (subcommand.equalsIgnoreCase("add")) {
             arena.spawnpoints.add(c.sender().getLocation());
             arenaRepository.save();
 
@@ -48,7 +48,7 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
             return;
         }
 
-        if(subcommand.equalsIgnoreCase("delete")) {
+        if (subcommand.equalsIgnoreCase("delete")) {
             c.arg(2).assertPresent();
             int index = c.arg(2).parseOrFail(Integer.class);
 

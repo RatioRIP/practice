@@ -13,7 +13,8 @@ public class Account {
 
     public String name;
 
-    public Account() {}
+    public Account() {
+    }
 
     public Account(UUID uuid) {
         this.uuid = uuid;

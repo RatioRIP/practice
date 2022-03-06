@@ -1,6 +1,9 @@
 package cc.ratio.practice.command.arena;
 
-import cc.ratio.practice.command.arena.handler.*;
+import cc.ratio.practice.command.arena.handler.ArenaSpawnpointHandler;
+import cc.ratio.practice.command.arena.handler.DeleteArenaHandler;
+import cc.ratio.practice.command.arena.handler.ListArenasHandler;
+import cc.ratio.practice.command.arena.handler.NewArenaHandler;
 import me.lucko.helper.Commands;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;

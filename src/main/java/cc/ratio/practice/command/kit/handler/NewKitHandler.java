@@ -19,7 +19,7 @@ public class NewKitHandler implements FunctionalCommandHandler<Player> {
     public void handle(CommandContext<Player> c) throws CommandInterruptException {
         String name = c.arg(0).parseOrFail(String.class);
 
-        if(kitRepository.find(name).isPresent()) {
+        if (kitRepository.find(name).isPresent()) {
             c.reply("&cKit already exists");
             return;
         } else {

@@ -11,9 +11,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class QueueGui extends Gui {
 
-    public QueueRepository queueRepository = Services.get(QueueRepository.class).get();
-
     private final boolean ranked;
+    public QueueRepository queueRepository = Services.get(QueueRepository.class).get();
 
     public QueueGui(Player player, boolean ranked) {
         super(player, 3, (ranked ? "Ranked" : "Unranked") + " Queue");

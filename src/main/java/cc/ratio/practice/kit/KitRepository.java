@@ -29,7 +29,6 @@ public class KitRepository implements Repository<Kit, String> {
     public boolean put(Kit kit) {
         boolean result = this.kits.add(kit);
 
-        this.storageHandler.save(this.kits);
         this.save();
 
         return result;
@@ -39,7 +38,6 @@ public class KitRepository implements Repository<Kit, String> {
     public boolean remove(Kit kit) {
         boolean result = this.kits.remove(kit);
 
-        this.storageHandler.save(this.kits);
         this.save();
 
         return result;

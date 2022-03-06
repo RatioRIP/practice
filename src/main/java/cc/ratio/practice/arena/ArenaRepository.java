@@ -29,7 +29,6 @@ public class ArenaRepository implements Repository<Arena, String> {
     public boolean put(Arena arena) {
         boolean result = this.arenas.add(arena);
 
-        this.storageHandler.save(this.arenas);
         this.save();
 
         return result;
@@ -39,7 +38,6 @@ public class ArenaRepository implements Repository<Arena, String> {
     public boolean remove(Arena arena) {
         boolean result = this.arenas.remove(arena);
 
-        this.storageHandler.save(this.arenas);
         this.save();
 
         return result;

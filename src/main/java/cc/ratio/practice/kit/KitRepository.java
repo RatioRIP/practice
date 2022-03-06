@@ -1,35 +1,35 @@
 package cc.ratio.practice.kit;
 
-import cc.ratio.practice.Practice;
 import cc.ratio.practice.util.Repository;
-import com.google.common.reflect.TypeToken;
-import me.lucko.helper.serialize.GsonStorageHandler;
+import me.lucko.helper.Services;
+import me.lucko.helper.mongo.Mongo;
+import me.lucko.helper.mongo.external.morphia.Datastore;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class KitRepository implements Repository<Kit, String> {
 
-    public final List<Kit> kits;
-    public final GsonStorageHandler<List<Kit>> storageHandler;
+    public final ArrayList<Kit> kits;
+
+    private Mongo mongo = Services.get(Mongo.class).get();
+    private Datastore datastore = mongo.getMorphiaDatastore();
 
     public KitRepository() {
-        this.storageHandler = new GsonStorageHandler(
-                "kits",
-                ".json",
-                Practice.instance.getDataFolder(),
-                new TypeToken<List<Kit>>(){}
-        );
+        this.kits = new ArrayList<>();
 
-        this.kits = this.storageHandler.load().orElseGet(() -> new ArrayList());
+        this.load();
+    }
+
+    public void load() {
+        this.datastore.find(Kit.class).forEach(this.kits::add);
     }
 
     @Override
     public boolean put(Kit kit) {
         boolean result = this.kits.add(kit);
 
-        this.save();
+        this.datastore.save(kit);
 
         return result;
     }
@@ -38,7 +38,7 @@ public class KitRepository implements Repository<Kit, String> {
     public boolean remove(Kit kit) {
         boolean result = this.kits.remove(kit);
 
-        this.save();
+        this.datastore.delete(kit);
 
         return result;
     }
@@ -48,7 +48,7 @@ public class KitRepository implements Repository<Kit, String> {
         return this.kits.stream().filter(kit -> kit.name.equalsIgnoreCase(identifier)).findFirst();
     }
 
-    public void save() {
-        this.storageHandler.save(this.kits);
+    public void save(Kit kit) {
+        this.datastore.save(kit);
     }
 }

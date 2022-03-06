@@ -4,13 +4,10 @@ import cc.ratio.practice.kit.Kit;
 import cc.ratio.practice.kit.KitRepository;
 import me.lucko.helper.Services;
 import me.lucko.helper.command.CommandInterruptException;
-import me.lucko.helper.command.argument.Argument;
 import me.lucko.helper.command.context.CommandContext;
 import me.lucko.helper.command.functional.FunctionalCommandHandler;
 import me.lucko.helper.menu.Gui;
 import me.lucko.helper.menu.Item;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,7 +37,6 @@ public class ViewKitInventoryHandler implements FunctionalCommandHandler<Player>
                         for (ItemStack item : kit.contents) {
                             if(item != null) {
                                 this.setItem(i, Item.builder(item).build());
-                                System.out.println(item);
                             }
                             i++;
                         }
@@ -51,7 +47,6 @@ public class ViewKitInventoryHandler implements FunctionalCommandHandler<Player>
                         for (ItemStack item : kit.armor) {
                             if(item != null) {
                                 this.setItem(i, Item.builder(item).build());
-                                System.out.println(item);
                             }
                             i++;
                         }

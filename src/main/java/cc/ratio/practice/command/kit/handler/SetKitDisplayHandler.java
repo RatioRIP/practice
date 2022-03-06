@@ -7,7 +7,6 @@ import me.lucko.helper.command.CommandInterruptException;
 import me.lucko.helper.command.context.CommandContext;
 import me.lucko.helper.command.functional.FunctionalCommandHandler;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class SetKitDisplayHandler implements FunctionalCommandHandler<Player> {
             Kit kit = optional.get();
 
             kit.display = c.sender().getItemInHand();
-            this.kitRepository.save();
+            kitRepository.save(kit);
 
             c.reply("Kit '" + kit.name + "' modified");
         }

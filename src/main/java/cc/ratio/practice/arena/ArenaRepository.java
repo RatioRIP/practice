@@ -15,11 +15,11 @@ public class ArenaRepository implements Repository<Arena, String> {
     public final GsonStorageHandler<List<Arena>> storageHandler;
 
     public ArenaRepository() {
-        this.storageHandler = new GsonStorageHandler(
+        this.storageHandler = new GsonStorageHandler<>(
                 "arenas",
                 ".json",
                 Practice.instance.getDataFolder(),
-                new TypeToken<List<Arena>>(){}
+                new TypeToken<List<Arena>>() {}
         );
 
         this.arenas = this.storageHandler.load().orElseGet(() -> new ArrayList());

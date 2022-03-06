@@ -31,7 +31,7 @@ public class SetKitInventoryHandler implements FunctionalCommandHandler<Player> 
 
             kit.contents = inventory.getContents();
             kit.armor = inventory.getArmorContents();
-            this.kitRepository.save();
+            kitRepository.save(kit);
 
             c.reply("Kit '" + kit.name + "' modified");
         }

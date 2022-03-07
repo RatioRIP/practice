@@ -10,13 +10,13 @@ import java.util.Map;
 public class LobbyItems {
 
     public static final ItemStack UNRANKED_QUEUE_ITEM = ItemStackBuilder.of(Material.IRON_SWORD)
-            .name("&7Unranked Queue")
-            .lore("&7Right click to open the Unranked Queue menu")
+            .name("&bUnranked Queue")
+            .lore("&7Right click to open the &bUnranked Queue &7menu")
             .build();
 
     public static final ItemStack RANKED_QUEUE_ITEM = ItemStackBuilder.of(Material.DIAMOND_SWORD)
             .name("&cRanked Queue")
-            .lore("&7Right click to open the Ranked Queue menu")
+            .lore("&7Right click to open the &cRanked Queue &7menu")
             .build();
 
     public static final Map<Integer, ItemStack> ITEMS = new HashMap<Integer, ItemStack>() {{

@@ -4,6 +4,8 @@ import cc.ratio.practice.util.InventoryUtil;
 import me.lucko.helper.mongo.external.morphia.annotations.*;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+
 @Entity(value = "kits", noClassnameStored = true)
 public class Kit {
 
@@ -46,4 +48,15 @@ public class Kit {
         this.armor = InventoryUtil.deserializeInventory(this._armor);
     }
 
+    @Override
+    public String toString() {
+        return "Kit{" +
+                "name='" + name + '\'' +
+                ", build=" + build +
+                ", ranked=" + ranked +
+                ", display=" + display +
+                ", contents=" + Arrays.toString(contents) +
+                ", armor=" + Arrays.toString(armor) +
+                '}';
+    }
 }

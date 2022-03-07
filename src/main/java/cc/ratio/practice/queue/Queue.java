@@ -17,4 +17,12 @@ public class Queue {
         this.players = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return "Queue{" +
+                "kit=" + kit +
+                ", ranked=" + ranked +
+                ", players=" + players +
+                '}';
+    }
 }

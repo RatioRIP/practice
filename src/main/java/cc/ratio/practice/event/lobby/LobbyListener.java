@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -67,6 +68,12 @@ public class LobbyListener implements TerminableModule {
         Events.subscribe(EntityDamageEvent.class)
                 .filter(event -> event.getEntityType() == EntityType.PLAYER)
                 .filter(event -> this.repository.find(event.getEntity().getUniqueId()).get().state == ProfileState.LOBBY)
+                .handler(event -> event.setCancelled(true))
+                .bindWith(consumer);
+
+        Events.subscribe(EntityDamageByEntityEvent.class)
+                .filter(event -> event.getDamager().getType() == EntityType.PLAYER)
+                .filter(event -> this.repository.find(event.getDamager().getUniqueId()).get().state == ProfileState.LOBBY)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 

@@ -50,12 +50,12 @@ public class Profile {
         }
 
         // create new account
-        account = new Account(this.uuid);
-        account.name = this.toPlayer().getName();
+        this.account = new Account(this.uuid);
+        this.account.name = this.toPlayer().getName();
 
-        datastore.save(account);
+        datastore.save(this.account);
 
-        return account;
+        return this.account;
     }
 
 

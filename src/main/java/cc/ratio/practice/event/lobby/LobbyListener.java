@@ -61,7 +61,10 @@ public class LobbyListener implements TerminableModule {
 
         Events.subscribe(InventoryClickEvent.class)
                 .filter(event -> this.repository.find(event.getWhoClicked().getUniqueId()).get().state.isLobby())
-                .filter(event -> event.getClickedInventory().equals(event.getInventory()))
+                .filter(event ->
+                        event.getClickedInventory().equals(event.getWhoClicked().getOpenInventory())
+                        ||
+                        event.getClickedInventory().equals(event.getWhoClicked().getInventory()))
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 

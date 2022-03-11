@@ -30,7 +30,7 @@ public class QueueGui extends Gui {
                 .map(queue -> {
                     final Kit kit = queue.kit;
 
-                    return ItemStackBuilder.of(kit.display)
+                    return ItemStackBuilder.of(kit.display.clone())
                         .name("&b" + kit.name)
                         .lore("&7Click to join the queue for " + (queue.ranked ? "&cRanked" : "&bUnranked") + " " + kit.name)
                         .build(() -> {

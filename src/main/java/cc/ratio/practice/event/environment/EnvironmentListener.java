@@ -7,14 +7,30 @@ import me.lucko.helper.Events;
 import me.lucko.helper.Services;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
+import org.bukkit.Material;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
 public class EnvironmentListener implements TerminableModule {
 
     private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
+
+    private final static List<Material> BLOCKED_ITEMS = Arrays.asList(
+            Material.CHEST,
+            Material.ENDER_CHEST,
+            Material.TRAPPED_CHEST,
+            Material.ENCHANTMENT_TABLE,
+            Material.WORKBENCH,
+            Material.WOODEN_DOOR,
+            Material.TRAP_DOOR,
+            Material.FENCE_GATE
+    );
 
     @Override
     public void setup(@Nonnull final TerminableConsumer consumer) {
@@ -27,5 +43,9 @@ public class EnvironmentListener implements TerminableModule {
                 .handler(new QuitEventHandler())
                 .bindWith(consumer);
 
+        Events.subscribe(PlayerInteractEvent.class)
+                .filter(event -> event.getAction() == Action.RIGHT_CLICK_BLOCK)
+                .filter(event -> BLOCKED_ITEMS.contains(event.getClickedBlock().getType()))
+                .handler(event -> event.setCancelled(true));
     }
 }

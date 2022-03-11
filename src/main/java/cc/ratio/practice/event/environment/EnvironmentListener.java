@@ -9,9 +9,11 @@ import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Material;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -46,6 +48,12 @@ public class EnvironmentListener implements TerminableModule {
         Events.subscribe(PlayerInteractEvent.class)
                 .filter(event -> event.getAction() == Action.RIGHT_CLICK_BLOCK)
                 .filter(event -> BLOCKED_ITEMS.contains(event.getClickedBlock().getType()))
+                .handler(event -> event.setCancelled(true));
+
+        Events.subscribe(WeatherChangeEvent.class)
+                .handler(event -> event.setCancelled(true));
+
+        Events.subscribe(CreatureSpawnEvent.class)
                 .handler(event -> event.setCancelled(true));
     }
 }

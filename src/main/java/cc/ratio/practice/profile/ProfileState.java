@@ -5,6 +5,10 @@ public enum ProfileState {
     LOBBY,
     QUEUE,
     PLAYING,
-    SPECTATING
+    SPECTATING;
+
+    public boolean isLobby() {
+        return this == LOBBY || this == QUEUE || this == SPECTATING;
+    }
 
 }

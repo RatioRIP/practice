@@ -27,17 +27,15 @@ public class JoinEventHandler implements Consumer<PlayerJoinEvent> {
     public void accept(final PlayerJoinEvent playerJoinEvent) {
         final Player player = playerJoinEvent.getPlayer();
 
-        this.repository.put(new Profile(playerJoinEvent.getPlayer().getUniqueId()));
+        Profile profile = new Profile(playerJoinEvent.getPlayer().getUniqueId());
+        this.repository.put(profile);
 
         for (final String line : WELCOME_MESSAGE) {
             player.sendMessage(Text.colorize(line));
         }
 
-        PlayerUtilities.reset(player);
         player.teleport(Bukkit.getWorld("world").getSpawnLocation());
 
-        LobbyItems.ITEMS.forEach((slot, item) -> {
-            player.getInventory().setItem(slot, item);
-        });
+        profile.lobbyInit();
     }
 }

@@ -51,12 +51,12 @@ public class Kit {
     @Override
     public String toString() {
         return "Kit{" +
-                "name='" + name + '\'' +
-                ", build=" + build +
-                ", ranked=" + ranked +
-                ", display=" + display +
-                ", contents=" + Arrays.toString(contents) +
-                ", armor=" + Arrays.toString(armor) +
+                "name='" + this.name + '\'' +
+                ", build=" + this.build +
+                ", ranked=" + this.ranked +
+                ", display=" + this.display +
+                ", contents=" + Arrays.toString(this.contents) +
+                ", armor=" + Arrays.toString(this.armor) +
                 '}';
     }
 }

@@ -31,7 +31,7 @@ public class QueueGui extends Gui {
     public void redraw() {
         if(!this.isFirstDraw()) return;
 
-        Player player = this.getPlayer();
+        final Player player = this.getPlayer();
 
         this.queueRepository.queues
                 .stream()
@@ -44,7 +44,7 @@ public class QueueGui extends Gui {
                         .name("&b" + kit.name)
                         .lore("&7Click to join the queue for " + rankity + " " + kit.name)
                         .build(() -> {
-                            Profile profile = this.profileRepository.find(player.getUniqueId()).get();
+                            final Profile profile = this.profileRepository.find(player.getUniqueId()).get();
 
                             profile.queue = queue;
                             profile.queueInit();

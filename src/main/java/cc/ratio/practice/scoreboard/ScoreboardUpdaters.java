@@ -19,12 +19,12 @@ public class ScoreboardUpdaters {
 
     public static final String TITLE = "&4&lRATIO";
 
-    public static void update(Player player, ScoreboardObjective objective, ProfileState state) {
-        List<String> lines = new ArrayList<>();
+    public static void update(final Player player, final ScoreboardObjective objective, final ProfileState state) {
+        final List<String> lines = new ArrayList<>();
 
-        int online =  Bukkit.getOnlinePlayers().size();
-        int playing = 0;
-        int queueing = queueRepository.queues.stream().map(queue -> queue.getPlayers().size()).reduce(0, Integer::sum);
+        final int online =  Bukkit.getOnlinePlayers().size();
+        final int playing = 0;
+        final int queueing = queueRepository.queues.stream().map(queue -> queue.getPlayers().size()).reduce(0, Integer::sum);
 
         // title
         if(state == ProfileState.LOBBY) {

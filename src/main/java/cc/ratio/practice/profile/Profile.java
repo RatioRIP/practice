@@ -67,7 +67,7 @@ public class Profile {
     }
 
     public void scoreboardInit() {
-        Scoreboard scoreboard = Services.get(ScoreboardProvider.class)
+        final Scoreboard scoreboard = Services.get(ScoreboardProvider.class)
                 .orElseGet(() -> Services.load(ScoreboardProvider.class))
                 .getScoreboard();
 

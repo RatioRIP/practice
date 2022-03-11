@@ -53,18 +53,18 @@ public class KitRepository implements Repository<Kit, String> {
         return result;
     }
 
-    private void deleteQueue(Kit kit) {
+    private void deleteQueue(final Kit kit) {
         this.deleteQueue(kit, true);
         this.deleteQueue(kit, false);
     }
 
-    private void deleteQueue(Kit kit, boolean ranked) {
+    private void deleteQueue(final Kit kit, final boolean ranked) {
         final Optional<Queue> optionalQueue = this.queueRepository.find(new Tuple<>(kit, ranked));
 
         optionalQueue.ifPresent(this.queueRepository::remove);
     }
 
-    private void createQueue(Kit kit) {
+    private void createQueue(final Kit kit) {
         final Queue rankedQueue = new Queue(kit, true);
         final Queue unrankedQueue = new Queue(kit, false);
 

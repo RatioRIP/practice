@@ -23,7 +23,7 @@ public class EnvironmentListener implements TerminableModule {
 
     private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
 
-    private final static List<Material> BLOCKED_ITEMS = Arrays.asList(
+    private static final List<Material> BLOCKED_ITEMS = Arrays.asList(
             Material.CHEST,
             Material.ENDER_CHEST,
             Material.TRAPPED_CHEST,

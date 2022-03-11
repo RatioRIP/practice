@@ -18,15 +18,15 @@ public class Queue {
     }
 
     public ArrayList<UUID> getPlayers() {
-        return players;
+        return this.players;
     }
 
     @Override
     public String toString() {
         return "Queue{" +
-                "kit=" + kit +
-                ", ranked=" + ranked +
-                ", players=" + players +
+                "kit=" + this.kit +
+                ", ranked=" + this.ranked +
+                ", players=" + this.players +
                 '}';
     }
 }

@@ -8,8 +8,6 @@ import me.lucko.helper.menu.Gui;
 import me.lucko.helper.menu.Item;
 import org.bukkit.entity.Player;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class QueueGui extends Gui {
 
     private final boolean ranked;
@@ -26,22 +24,20 @@ public class QueueGui extends Gui {
     public void redraw() {
         if(!this.isFirstDraw()) return;
 
-        System.out.println(this.queueRepository.queues);
-
         this.queueRepository.queues
                 .stream()
                 .filter(queue -> queue.ranked == this.ranked)
-                .forEach(queue -> {
+                .map(queue -> {
                     final Kit kit = queue.kit;
-                    final Item item = ItemStackBuilder.of(queue.kit.display)
-                            .name("&b" + kit.name)
-                            .lore("&7Click to join the queue for " + (queue.ranked ? "&cRanked" : "&bUnranked") + " " + kit.name)
-                            .build(() -> {
-                                this.getPlayer().sendMessage("You should be joining the " + (this.ranked ? "Ranked" : "Unranked") + " " + kit.name + " queue.");
-                            });
 
-                    this.addItem(item);
-                });
+                    return ItemStackBuilder.of(kit.display)
+                        .name("&b" + kit.name)
+                        .lore("&7Click to join the queue for " + (queue.ranked ? "&cRanked" : "&bUnranked") + " " + kit.name)
+                        .build(() -> {
+                            this.getPlayer().sendMessage("You should be joining the " + (this.ranked ? "Ranked" : "Unranked") + " " + kit.name + " queue.");
+                        });
+                })
+                .forEach(this::addItem);
     }
 
 }

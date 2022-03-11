@@ -77,13 +77,7 @@ public class Profile {
     }
 
     public void scoreboardUpdate() {
-        if(this.state == ProfileState.LOBBY) {
-            ScoreboardUpdaters.LOBBY_UPDATER.accept(this.toPlayer(), this.scoreboardObjective);
-        }
-
-        if(this.state == ProfileState.QUEUE) {
-            ScoreboardUpdaters.QUEUE_UPDATER.accept(this.toPlayer(), this.scoreboardObjective);
-        }
+        ScoreboardUpdaters.update(this.toPlayer(), this.scoreboardObjective, this.state);
     }
 
     public void lobbyInit() {

@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class LobbyListener implements TerminableModule {
 
@@ -62,9 +63,9 @@ public class LobbyListener implements TerminableModule {
         Events.subscribe(InventoryClickEvent.class)
                 .filter(event -> this.repository.find(event.getWhoClicked().getUniqueId()).get().state.isLobby())
                 .filter(event ->
-                        event.getClickedInventory().equals(event.getWhoClicked().getOpenInventory())
+                        Objects.equals(event.getClickedInventory(), event.getWhoClicked().getOpenInventory())
                         ||
-                        event.getClickedInventory().equals(event.getWhoClicked().getInventory()))
+                        Objects.equals(event.getClickedInventory(), event.getWhoClicked().getInventory()))
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 

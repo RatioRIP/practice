@@ -17,6 +17,10 @@ public class Queue {
         this.players = new ArrayList<>();
     }
 
+    public ArrayList<UUID> getPlayers() {
+        return players;
+    }
+
     @Override
     public String toString() {
         return "Queue{" +

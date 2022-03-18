@@ -34,9 +34,8 @@ public class JoinEventHandler implements Consumer<PlayerJoinEvent> {
             player.sendMessage(Text.colorize(line));
         }
 
-        player.teleport(Bukkit.getWorld("world").getSpawnLocation());
-
         profile.scoreboardInit();
         profile.lobbyInit();
+        profile.lobbyTeleport();
     }
 }

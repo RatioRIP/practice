@@ -47,6 +47,7 @@ public class QueueGui extends Gui {
                             final Profile profile = this.profileRepository.find(player.getUniqueId()).get();
 
                             profile.queue = queue;
+                            profile.queue.add(profile.toPlayer());
                             profile.queueInit();
 
                             player.sendMessage(Text.colorize("&7You've joined the " + rankity + " " + kit.name + " &7queue."));

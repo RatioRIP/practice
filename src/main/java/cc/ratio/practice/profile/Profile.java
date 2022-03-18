@@ -93,6 +93,10 @@ public class Profile {
 
     }
 
+    public void lobbyTeleport() {
+        this.toPlayer().teleport(Bukkit.getWorld("world").getSpawnLocation());
+    }
+
     public void queueInit() {
         this.state = ProfileState.QUEUE;
         this.scoreboardUpdate();

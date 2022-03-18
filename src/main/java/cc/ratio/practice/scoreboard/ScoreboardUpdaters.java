@@ -38,11 +38,11 @@ public class ScoreboardUpdaters {
         // lines
         lines.add("&7&m--------------------");
 
-        lines.add("&cOnline: &7" + online);
-        lines.add("&cPlaying: &7" + playing);
-        lines.add("&cQueueing: &7" + queueing);
+        lines.add("&cOnline: &f" + online);
+        lines.add("&cPlaying: &f" + playing);
+        lines.add("&cQueueing: &f" + queueing);
         lines.add("&r&r");
-        lines.add("&4Coins: &7420");
+        lines.add("&4Coins: &f420");
 
         if(state == ProfileState.QUEUE) {
             final Queue queue = profileRepository.find(player.getUniqueId()).get().queue;

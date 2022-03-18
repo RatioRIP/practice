@@ -1,6 +1,7 @@
 package cc.ratio.practice.queue;
 
 import cc.ratio.practice.kit.Kit;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -17,6 +18,14 @@ public class Queue {
         this.players = new ArrayList<>();
     }
 
+    public void add(Player player) {
+        this.players.add(player.getUniqueId());
+    }
+
+    public void remove(Player player) {
+        this.players.remove(player.getUniqueId());
+    }
+
     public ArrayList<UUID> getPlayers() {
         return this.players;
     }
@@ -29,4 +38,5 @@ public class Queue {
                 ", players=" + this.players +
                 '}';
     }
+
 }

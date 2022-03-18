@@ -5,6 +5,7 @@ import cc.ratio.practice.match.team.Team;
 import cc.ratio.practice.profile.Profile;
 import cc.ratio.practice.profile.ProfileRepository;
 import cc.ratio.practice.profile.ProfileState;
+import me.lucko.helper.Schedulers;
 import me.lucko.helper.Services;
 import me.lucko.helper.text3.Text;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Match {
@@ -24,19 +26,44 @@ public class Match {
 
     public final List<Team> teams;
     public final Arena arena;
+    public MatchState state;
+    public final AtomicInteger countdown;
 
     public Match(final UUID uuid, final Arena arena, final List<Team> teams) {
         this.uuid = uuid;
         this.arena = arena;
         this.teams = teams;
+
+        this.state = MatchState.STARTING;
+        this.countdown = new AtomicInteger(3);
     }
 
     public void start() throws Exception {
-        Map<UUID, Location> locations = new HashMap<>();
+        // associate spawnpoint with team
+        Map<Team, Location> locations = new HashMap<>();
 
         if (this.teams.size() > this.arena.spawnpoints.size()) {
             throw new Exception("not enough spawnpoints");
         }
+
+        for (int i = 0; i < this.arena.spawnpoints.size(); i++) {
+            locations.put(this.teams.get(i), this.arena.spawnpoints.get(i));
+        }
+
+        locations.forEach((team, location) -> {
+            team.toProfiles().stream().map(Profile::toPlayer).forEach(player -> player.teleport(location));
+        });
+
+        Schedulers.async().runRepeating(task -> {
+            int count = this.countdown.getAndDecrement();
+
+            this.msg("&a" + count);
+
+            if(count <= 0) {
+                this.state = MatchState.PLAYING;
+                task.stop();
+            }
+        }, 20L, 20L);
     }
 
     public void stop(StopReason reason, Team winner, List<Team> losers) {

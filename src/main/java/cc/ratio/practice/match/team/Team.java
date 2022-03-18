@@ -20,14 +20,14 @@ public class Team extends ArrayList<UUID> {
         Collections.addAll(this, uuids);
     }
 
-    public List<Profile> toProfile() {
+    public List<Profile> toProfiles() {
         return this.stream()
                 .map(uuid -> profileRepository.find(uuid).get())
                 .collect(Collectors.toList());
     }
 
     public String formatName(ChatColor color) {
-        return this.toProfile()
+        return this.toProfiles()
                 .stream()
                 .map(Profile::toPlayer)
                 .map(Player::getName)

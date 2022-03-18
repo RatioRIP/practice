@@ -62,6 +62,8 @@ public class Match {
             if(count <= 0) {
                 this.state = MatchState.PLAYING;
                 task.stop();
+
+                this.msg(("&aGame Started"));
             }
         }, 20L, 20L);
     }

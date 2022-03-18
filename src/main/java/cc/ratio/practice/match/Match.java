@@ -63,7 +63,7 @@ public class Match {
                 this.state = MatchState.PLAYING;
                 task.stop();
 
-                this.msg(("&aGame Started"));
+                this.msg("&aGame Started");
             }
         }, 20L, 20L);
     }

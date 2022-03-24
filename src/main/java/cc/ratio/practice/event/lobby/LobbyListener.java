@@ -11,10 +11,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -81,6 +79,14 @@ public class LobbyListener implements TerminableModule {
                 .filter(event -> event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() != Material.AIR)
                 .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state.isLobby())
                 .handler(new InteractEventHandler())
+                .bindWith(consumer);
+
+        Events.subscribe(PlayerMoveEvent.class)
+                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state.isLobby())
+                .filter(event -> event.getTo().getY() <= 0)
+                .handler(event -> {
+                    event.setTo(event.getPlayer().getWorld().getSpawnLocation().add(new Vector(0, 5, 0)));
+                })
                 .bindWith(consumer);
     }
 }

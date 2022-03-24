@@ -88,6 +88,33 @@ public class MatchListener implements TerminableModule {
                 .handler(EventHandlers.cancel())
                 .bindWith(consumer);
 
+        Events.subscribe(EntityDamageByEntityEvent.class)
+                // are entities involved players?
+                .filter(event -> event.getDamager().getType() == EntityType.PLAYER)
+                .filter(event -> event.getEntity().getType() == EntityType.PLAYER)
+
+                // are players playing?
+                .filter(event -> profileRepository.find(event.getDamager().getUniqueId()).get().state == ProfileState.PLAYING)
+                .filter(event -> profileRepository.find(event.getEntity().getUniqueId()).get().state == ProfileState.PLAYING)
+
+                // is damaged player gonna die?
+                .filter(event -> ((Player) event.getEntity()).getHealth() - event.getFinalDamage() <= 0)
+
+                .handler(event -> {
+                    Player loser = (Player) event.getEntity();
+                    Player winner = (Player) event.getDamager();
+
+                    Match match = this.getMatch(loser.getUniqueId());
+
+                    event.setDamage(0);
+
+                    match.stop(StopReason.END, match.getTeam(winner.getUniqueId()), match.getOpponents(winner.getUniqueId()));
+
+                    match.msg("&c" + loser.getName() + " was killed by &a" + winner.getName());
+                })
+
+                .bindWith(consumer);
+
         Events.subscribe(PlayerMoveEvent.class)
                 // is the player not in the same block?
                 .filter(EventFilters.ignoreSameBlock())
@@ -107,7 +134,7 @@ public class MatchListener implements TerminableModule {
                 // is player in a match?
                 .filter(event -> this.inMatch(event.getPlayer().getUniqueId()))
 
-                // cancel move event
+                // cancel quit event
                 .handler(event -> {
                     UUID loser = event.getPlayer().getUniqueId();
                     Match match = this.getMatch(loser);

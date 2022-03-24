@@ -1,12 +1,9 @@
 package cc.ratio.practice.event.environment.handler;
 
-import cc.ratio.practice.lobby.LobbyItems;
 import cc.ratio.practice.profile.Profile;
 import cc.ratio.practice.profile.ProfileRepository;
-import cc.ratio.practice.util.PlayerUtilities;
 import me.lucko.helper.Services;
 import me.lucko.helper.text3.Text;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 

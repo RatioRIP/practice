@@ -6,10 +6,7 @@ import me.lucko.helper.Services;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Team extends ArrayList<UUID> {
@@ -22,7 +19,8 @@ public class Team extends ArrayList<UUID> {
 
     public List<Profile> toProfiles() {
         return this.stream()
-                .map(uuid -> profileRepository.find(uuid).get())
+                .map(uuid -> profileRepository.find(uuid).orElse(null))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -33,5 +31,10 @@ public class Team extends ArrayList<UUID> {
                 .map(Player::getName)
                 .map(s -> color + s)
                 .collect(Collectors.joining(ChatColor.GRAY + ", "));
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

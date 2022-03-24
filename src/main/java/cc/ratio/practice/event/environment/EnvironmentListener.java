@@ -10,6 +10,7 @@ import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Material;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -48,12 +49,21 @@ public class EnvironmentListener implements TerminableModule {
         Events.subscribe(PlayerInteractEvent.class)
                 .filter(event -> event.getAction() == Action.RIGHT_CLICK_BLOCK)
                 .filter(event -> BLOCKED_ITEMS.contains(event.getClickedBlock().getType()))
-                .handler(event -> event.setCancelled(true));
+                .handler(event -> event.setCancelled(true))
+                .bindWith(consumer);
 
         Events.subscribe(WeatherChangeEvent.class)
-                .handler(event -> event.setCancelled(true));
+                .handler(event -> event.setCancelled(true))
+                .bindWith(consumer);
 
         Events.subscribe(CreatureSpawnEvent.class)
-                .handler(event -> event.setCancelled(true));
+                .handler(event -> event.setCancelled(true))
+                .bindWith(consumer);
+
+        Events.subscribe(FoodLevelChangeEvent.class)
+                .handler(event -> {
+                    event.setFoodLevel(event.getFoodLevel() + 1);
+                })
+                .bindWith(consumer);
     }
 }

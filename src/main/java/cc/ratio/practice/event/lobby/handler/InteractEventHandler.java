@@ -22,8 +22,6 @@ public class InteractEventHandler implements Consumer<PlayerInteractEvent> {
         final Player player = playerInteractEvent.getPlayer();
         final ItemStack item = playerInteractEvent.getPlayer().getItemInHand();
 
-        playerInteractEvent.setCancelled(true);
-
         if (item.isSimilar(LobbyItems.UNRANKED_QUEUE_ITEM)) {
             new QueueGui(player, false).open();
             return;

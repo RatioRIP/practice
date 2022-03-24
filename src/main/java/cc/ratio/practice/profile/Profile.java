@@ -1,6 +1,7 @@
 package cc.ratio.practice.profile;
 
 import cc.ratio.practice.lobby.LobbyItems;
+import cc.ratio.practice.match.Match;
 import cc.ratio.practice.profile.account.Account;
 import cc.ratio.practice.queue.Queue;
 import cc.ratio.practice.scoreboard.ScoreboardUpdaters;
@@ -23,14 +24,21 @@ public class Profile {
     public Account account;
 
     public ProfileState state;
+
     public Queue queue;
+    public Match match;
 
     public ScoreboardObjective scoreboardObjective;
+
+    public boolean build;
 
     public Profile(final UUID uuid) {
         this.uuid = uuid;
         this.state = ProfileState.LOBBY;
+
         this.queue = null;
+        this.match = null;
+        this.build = false;
 
         this.loadAccount();
     }

@@ -2,6 +2,7 @@ package cc.ratio.practice.kit;
 
 import cc.ratio.practice.util.InventoryUtil;
 import me.lucko.helper.mongo.external.morphia.annotations.*;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -58,5 +59,11 @@ public class Kit {
                 ", contents=" + Arrays.toString(this.contents) +
                 ", armor=" + Arrays.toString(this.armor) +
                 '}';
+    }
+
+    public void apply(Player player) {
+        player.getInventory().setArmorContents(this.armor);
+        player.getInventory().setContents(this.contents);
+        player.updateInventory();
     }
 }

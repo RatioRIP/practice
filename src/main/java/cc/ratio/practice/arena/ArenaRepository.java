@@ -3,6 +3,7 @@ package cc.ratio.practice.arena;
 import cc.ratio.practice.Practice;
 import cc.ratio.practice.util.Repository;
 import com.google.common.reflect.TypeToken;
+import me.lucko.helper.random.RandomSelector;
 import me.lucko.helper.serialize.GsonStorageHandler;
 
 import java.util.ArrayList;
@@ -52,4 +53,9 @@ public class ArenaRepository implements Repository<Arena, String> {
     public void save() {
         this.storageHandler.save(this.arenas);
     }
+
+    public Arena getRandom() {
+        return RandomSelector.uniform(this.arenas).pick();
+    }
+
 }

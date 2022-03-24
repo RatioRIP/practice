@@ -1,10 +1,12 @@
 package cc.ratio.practice.match;
 
 import cc.ratio.practice.arena.Arena;
+import cc.ratio.practice.kit.Kit;
 import cc.ratio.practice.match.team.Team;
 import cc.ratio.practice.profile.Profile;
 import cc.ratio.practice.profile.ProfileRepository;
 import cc.ratio.practice.profile.ProfileState;
+import cc.ratio.practice.util.PlayerUtilities;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.Services;
 import me.lucko.helper.text3.Text;
@@ -12,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.material.Ladder;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,11 +29,14 @@ public class Match {
 
     public final List<Team> teams;
     public final Arena arena;
+    private final Kit kit;
+
     public MatchState state;
     public final AtomicInteger countdown;
 
-    public Match(final UUID uuid, final Arena arena, final List<Team> teams) {
+    public Match(final UUID uuid, final Kit kit, final Arena arena, final List<Team> teams) {
         this.uuid = uuid;
+        this.kit = kit;
         this.arena = arena;
         this.teams = teams;
 
@@ -43,6 +49,7 @@ public class Match {
         Map<Team, Location> locations = new HashMap<>();
 
         if (this.teams.size() > this.arena.spawnpoints.size()) {
+            this.stop(StopReason.ERROR, null, null);
             throw new Exception("not enough spawnpoints");
         }
 
@@ -54,18 +61,29 @@ public class Match {
             team.toProfiles().stream().map(Profile::toPlayer).forEach(player -> player.teleport(location));
         });
 
-        Schedulers.async().runRepeating(task -> {
-            int count = this.countdown.getAndDecrement();
+        this.getProfiles().forEach(profile -> {
+            profile.state = ProfileState.PLAYING;
+            profile.match = this;
 
-            this.msg("&a" + count);
+            PlayerUtilities.reset(profile.toPlayer());
+            this.kit.apply(profile.toPlayer());
+
+            profile.scoreboardUpdate();
+        });
+
+        Schedulers.sync().runRepeating(task -> {
+            int count = this.countdown.getAndDecrement();
 
             if(count <= 0) {
                 this.state = MatchState.PLAYING;
                 task.stop();
 
                 this.msg("&aGame Started");
+            } else {
+                this.msg("&a" + count);
             }
-        }, 20L, 20L);
+
+        }, 10L, 20L);
     }
 
     public void stop(StopReason reason, Team winner, List<Team> losers) {
@@ -80,19 +98,19 @@ public class Match {
         if(reason == StopReason.END) {
             final List<String> message = new ArrayList<>();
 
+            message.add("&7&m--------------------------");
             message.add("&cGame Ended");
             message.add("\n");
-            message.add("\n");
-            message.add("&aWinner" + (winner.size() > 1 ? "s" : "") + ": &f" + winner.formatName(ChatColor.GREEN));
-            message.add("\n");
+            message.add("&aWinner" + (winner.size() > 1 ? "s" : "") + ": &f" + winner.formatName(ChatColor.WHITE));
             message.add("&cLoser" + (losers.size() > 1 ? "s" : "") + ": &f" +
                     losers
                             .stream()
-                            .map(team -> team.formatName(ChatColor.RED))
+                            .map(team -> team.formatName(ChatColor.WHITE))
                             .collect(Collectors.joining("&7, "))
             );
+            message.add("&7&m--------------------------");
 
-            String[] arr = message.toArray(new String[]{});
+            final String[] arr = message.toArray(new String[]{});
 
             this.msg(arr);
         }
@@ -108,11 +126,13 @@ public class Match {
     }
 
     public void msg(String... lines) {
-        for (Player player : this.getPlayers()) {
-            for (String line : lines) {
-                player.sendMessage(Text.colorize(line));
-            }
-        }
+        this.getPlayers().stream()
+                .filter(Objects::nonNull)
+                .forEach(player -> {
+                    for (String line : lines) {
+                        player.sendMessage(Text.colorize(line));
+                    }
+                });
     }
 
     public List<Player> getPlayers() {
@@ -137,4 +157,16 @@ public class Match {
                 .collect(Collectors.toList());
     }
 
+    public Team getTeam(UUID uuid) {
+        return this.teams.stream()
+                .filter(team -> team.contains(uuid))
+                .findFirst()
+                .get();
+    }
+
+    public List<Team> getOpponents(UUID uuid) {
+        return this.teams.stream()
+                .filter(team -> !team.contains(uuid))
+                .collect(Collectors.toList());
+    }
 }

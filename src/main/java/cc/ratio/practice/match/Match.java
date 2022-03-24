@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.material.Ladder;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,10 +28,9 @@ public class Match {
 
     public final List<Team> teams;
     public final Arena arena;
-    private final Kit kit;
-
-    public MatchState state;
     public final AtomicInteger countdown;
+    private final Kit kit;
+    public MatchState state;
 
     public Match(final UUID uuid, final Kit kit, final Arena arena, final List<Team> teams) {
         this.uuid = uuid;
@@ -74,7 +72,7 @@ public class Match {
         Schedulers.sync().runRepeating(task -> {
             int count = this.countdown.getAndDecrement();
 
-            if(count <= 0) {
+            if (count <= 0) {
                 this.state = MatchState.PLAYING;
                 task.stop();
 
@@ -87,15 +85,15 @@ public class Match {
     }
 
     public void stop(StopReason reason, Team winner, List<Team> losers) {
-        if(reason == StopReason.ERROR) {
+        if (reason == StopReason.ERROR) {
             this.msg("&cThe match has stopped due to an error");
         }
 
-        if(reason == StopReason.FORCED) {
+        if (reason == StopReason.FORCED) {
             this.msg("&cThis match has been forcefully stopped");
         }
 
-        if(reason == StopReason.END) {
+        if (reason == StopReason.END) {
             final List<String> message = new ArrayList<>();
 
             message.add("&7&m--------------------------");

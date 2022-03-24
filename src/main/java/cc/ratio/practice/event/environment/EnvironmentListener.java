@@ -22,8 +22,6 @@ import java.util.List;
 
 public class EnvironmentListener implements TerminableModule {
 
-    private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
-
     private static final List<Material> BLOCKED_ITEMS = Arrays.asList(
             Material.CHEST,
             Material.ENDER_CHEST,
@@ -34,6 +32,7 @@ public class EnvironmentListener implements TerminableModule {
             Material.TRAP_DOOR,
             Material.FENCE_GATE
     );
+    private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
 
     @Override
     public void setup(@Nonnull final TerminableConsumer consumer) {

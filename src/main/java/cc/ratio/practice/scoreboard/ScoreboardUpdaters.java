@@ -18,38 +18,36 @@ import java.util.List;
 
 public class ScoreboardUpdaters {
 
+    public static final String TITLE = "&4&lRATIO";
     private static final String LINE = "&c&m---------------------";
-
     private static final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
     private static final QueueRepository queueRepository = Services.get(QueueRepository.class).get();
     private static final MatchRepository matchRepository = Services.get(MatchRepository.class).get();
 
-    public static final String TITLE = "&4&lRATIO";
-
     public static void update(final Player player, final ScoreboardObjective objective, final ProfileState state) {
         final List<String> lines = new ArrayList<>();
 
-        final int online =  Bukkit.getOnlinePlayers().size();
+        final int online = Bukkit.getOnlinePlayers().size();
         final int playing = 0;
         final int queueing = queueRepository.queues.stream().map(queue -> queue.getPlayers().size()).reduce(0, Integer::sum);
 
         // title
-        if(state == ProfileState.LOBBY) {
+        if (state == ProfileState.LOBBY) {
             objective.setDisplayName(TITLE);
         }
 
-        if(state == ProfileState.QUEUE) {
+        if (state == ProfileState.QUEUE) {
             objective.setDisplayName(TITLE + " &7- &fQueueing");
         }
 
-        if(state == ProfileState.PLAYING) {
+        if (state == ProfileState.PLAYING) {
             objective.setDisplayName(TITLE);
         }
 
         // lines
         lines.add(LINE);
 
-        if(state.isLobby()) {
+        if (state.isLobby()) {
             lines.add("&4Online: &f" + online);
             lines.add("&4Playing: &f" + playing);
             lines.add("&4Queueing: &f" + queueing);
@@ -65,7 +63,7 @@ public class ScoreboardUpdaters {
             }
         }
 
-        if(state == ProfileState.PLAYING) {
+        if (state == ProfileState.PLAYING) {
             Match match = profileRepository.find(player.getUniqueId()).get().match;
             List<Team> opponents = match.getOpponents(player.getUniqueId());
 

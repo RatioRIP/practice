@@ -7,10 +7,7 @@ import me.lucko.helper.Services;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -62,8 +59,8 @@ public class LobbyListener implements TerminableModule {
                 .filter(event -> this.repository.find(event.getWhoClicked().getUniqueId()).get().state.isLobby())
                 .filter(event ->
                         Objects.equals(event.getClickedInventory(), event.getWhoClicked().getOpenInventory())
-                        ||
-                        Objects.equals(event.getClickedInventory(), event.getWhoClicked().getInventory()))
+                                ||
+                                Objects.equals(event.getClickedInventory(), event.getWhoClicked().getInventory()))
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 

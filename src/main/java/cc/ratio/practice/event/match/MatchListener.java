@@ -16,8 +16,6 @@ import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -136,7 +134,7 @@ public class MatchListener implements TerminableModule {
 
                     event.getDrops().clear();
 
-                    if(event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                    if (event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
                         Player winner = (Player) ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
 
                         match.stop(StopReason.END, match.getTeam(winner.getUniqueId()), match.getOpponents(winner.getUniqueId()));
@@ -160,7 +158,7 @@ public class MatchListener implements TerminableModule {
     private boolean inMatch(final UUID uuid) {
         final Optional<Profile> profileOptional = profileRepository.find(uuid);
 
-        if(!profileOptional.isPresent()) {
+        if (!profileOptional.isPresent()) {
             return false;
         }
 
@@ -170,7 +168,7 @@ public class MatchListener implements TerminableModule {
     }
 
     private Match getMatch(final UUID uuid) {
-        if(!this.inMatch(uuid)) {
+        if (!this.inMatch(uuid)) {
             return null;
         }
 

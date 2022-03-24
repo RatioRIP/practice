@@ -32,7 +32,7 @@ public class InteractEventHandler implements Consumer<PlayerInteractEvent> {
             return;
         }
 
-        if(item.isSimilar(LobbyItems.LEAVE_QUEUE_ITEM)) {
+        if (item.isSimilar(LobbyItems.LEAVE_QUEUE_ITEM)) {
             final Profile profile = this.profileRepository.find(player.getUniqueId()).get();
 
             profile.queue.remove(profile.toPlayer());

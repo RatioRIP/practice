@@ -35,7 +35,7 @@ public class QueueGui extends Gui {
 
     @Override
     public void redraw() {
-        if(!this.isFirstDraw()) return;
+        if (!this.isFirstDraw()) return;
 
         final Player player = this.getPlayer();
 
@@ -47,49 +47,49 @@ public class QueueGui extends Gui {
                     final String rankity = queue.ranked ? "&cRanked" : "&bUnranked";
 
                     return ItemStackBuilder.of(kit.display.clone())
-                        .name("&b" + kit.name)
-                        .lore("&7Click to join the queue for " + rankity + " " + kit.name)
-                        .build(() -> {
-                            this.close();
+                            .name("&b" + kit.name)
+                            .lore("&7Click to join the queue for " + rankity + " " + kit.name)
+                            .build(() -> {
+                                this.close();
 
-                            final Profile profile = this.profileRepository.find(player.getUniqueId()).get();
+                                final Profile profile = this.profileRepository.find(player.getUniqueId()).get();
 
-                            profile.queue = queue;
-                            profile.queue.add(profile.toPlayer());
-                            profile.queueInit();
-                            profile.scoreboardUpdate();
+                                profile.queue = queue;
+                                profile.queue.add(profile.toPlayer());
+                                profile.queueInit();
+                                profile.scoreboardUpdate();
 
-                            player.sendMessage(Text.colorize("&7You've joined the " + rankity + " " + kit.name + " &7queue."));
+                                player.sendMessage(Text.colorize("&7You've joined the " + rankity + " " + kit.name + " &7queue."));
 
-                            if(queue.players.size() >= 2) {
-                                // TODO: i think there's something missing here
-                                final UUID first = queue.players.remove(0);
-                                final UUID second = queue.players.remove(0);
+                                if (queue.players.size() >= 2) {
+                                    // TODO: i think there's something missing here
+                                    final UUID first = queue.players.remove(0);
+                                    final UUID second = queue.players.remove(0);
 
-                                final Match match = new Match(
-                                        UUID.randomUUID(),
+                                    final Match match = new Match(
+                                            UUID.randomUUID(),
 
-                                        queue.kit,
+                                            queue.kit,
 
-                                        this.arenaRepository.getRandom(),
+                                            this.arenaRepository.getRandom(),
 
-                                        Arrays.asList(
-                                                new Team(first),
-                                                new Team(second)
-                                        )
-                                );
+                                            Arrays.asList(
+                                                    new Team(first),
+                                                    new Team(second)
+                                            )
+                                    );
 
-                                this.matchRepository.put(match);
+                                    this.matchRepository.put(match);
 
-                                try {
-                                    match.start();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    match.stop(StopReason.ERROR, null, null);
+                                    try {
+                                        match.start();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        match.stop(StopReason.ERROR, null, null);
+                                    }
                                 }
-                            }
 
-                        });
+                            });
                 })
                 .forEach(this::addItem);
     }

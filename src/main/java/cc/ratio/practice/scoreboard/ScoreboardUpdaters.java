@@ -58,7 +58,7 @@ public class ScoreboardUpdaters {
                 final Queue queue = profileRepository.find(player.getUniqueId()).get().queue;
                 final String rankity = queue.ranked ? "&cRanked" : "&bUnranked";
                 lines.add("&r&r&r");
-                lines.add("Queueing for");
+                lines.add("Queueing for:");
                 lines.add(rankity + " " + queue.kit.name);
             }
         }

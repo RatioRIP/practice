@@ -7,7 +7,9 @@ import me.lucko.helper.Services;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -68,11 +70,11 @@ public class LobbyListener implements TerminableModule {
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
-//        Events.subscribe(EntityDamageByEntityEvent.class)
-//                .filter(event -> event.getDamager().getType() == EntityType.PLAYER)
-//                .filter(event -> this.repository.find(event.getDamager().getUniqueId()).get().state.isLobby())
-//                .handler(event -> event.setCancelled(true))
-//                .bindWith(consumer);
+        Events.subscribe(EntityDamageByEntityEvent.class)
+                .filter(event -> event.getDamager().getType() == EntityType.PLAYER)
+                .filter(event -> this.repository.find(event.getDamager().getUniqueId()).get().state.isLobby())
+                .handler(event -> event.setCancelled(true))
+                .bindWith(consumer);
 
         Events.subscribe(PlayerInteractEvent.class)
                 .filter(event -> event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)

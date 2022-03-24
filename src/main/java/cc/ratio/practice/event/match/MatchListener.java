@@ -1,5 +1,6 @@
 package cc.ratio.practice.event.match;
 
+import cc.ratio.practice.event.lobby.handler.InteractEventHandler;
 import cc.ratio.practice.match.Match;
 import cc.ratio.practice.match.MatchRepository;
 import cc.ratio.practice.match.MatchState;
@@ -13,16 +14,15 @@ import me.lucko.helper.event.filter.EventFilters;
 import me.lucko.helper.event.filter.EventHandlers;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -130,22 +130,20 @@ public class MatchListener implements TerminableModule {
                 .bindWith(consumer);
 
 
-        Events.subscribe(PlayerQuitEvent.class, EventPriority.HIGHEST)
-                // is player in a match?
-                .filter(event -> this.inMatch(event.getPlayer().getUniqueId()))
-
-                // cancel quit event
-                .handler(event -> {
-                    UUID loser = event.getPlayer().getUniqueId();
-                    Match match = this.getMatch(loser);
-
-                    System.out.println(match);
-
-                    match.stop(StopReason.END, match.getOpponents(loser).get(0), Collections.singletonList(match.getTeam(loser)));
-
-                    match.msg("&c" + event.getPlayer() + " disconnected");
-                })
-                .bindWith(consumer);
+//        Events.subscribe(PlayerQuitEvent.class, EventPriority.HIGHEST)
+//                 is player in a match?
+//                .filter(event -> this.inMatch(event.getPlayer().getUniqueId()))
+//
+//                 cancel quit event
+//                .handler(event -> {
+//                    UUID loser = event.getPlayer().getUniqueId();
+//                    Match match = this.getMatch(loser);
+//
+//                    match.stop(StopReason.END, match.getOpponents(loser).get(0), Collections.singletonList(match.getTeam(loser)));
+//
+//                    match.msg("&c" + event.getPlayer() + " disconnected");
+//                })
+//                .bindWith(consumer);
 
         Events.subscribe(PlayerDeathEvent.class)
                 // is player in a match?
@@ -180,6 +178,51 @@ public class MatchListener implements TerminableModule {
                 })
                 .bindWith(consumer);
 
+        Events.subscribe(PlayerInteractEvent.class)
+                // is player in a match?
+                .filter(event -> this.inMatch(event.getPlayer().getUniqueId()))
+
+                // is player holding an enderpearl?
+                .filter(event -> event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+                .filter(event -> event.getItem() != null && event.getItem().getType() == Material.ENDER_PEARL)
+
+                // has the match not stared yet?
+                .filter(event -> this.getMatch(event.getPlayer().getUniqueId()).state != MatchState.PLAYING)
+
+                // cancel event
+                .handler(EventHandlers.cancel())
+
+                .bindWith(consumer);
+
+        Events.subscribe(PlayerInteractEvent.class)
+                // is player in a match?
+                .filter(event -> this.inMatch(event.getPlayer().getUniqueId()))
+
+                // is player holding an enderpearl?
+                .filter(event -> event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+                .filter(event -> event.getItem() != null && event.getItem().getType() == Material.ENDER_PEARL)
+
+                // cancel event
+                .handler(event -> {
+
+                })
+
+                .bindWith(consumer);
+
+
+    }
+
+    private boolean hasCooldown(final UUID uuid) {
+        final Optional<Profile> profileOptional = profileRepository.find(uuid);
+
+        if (!profileOptional.isPresent()) {
+            return false;
+        }
+
+        final Profile profile = profileOptional.get();
+
+        return false;
+//        profile.
     }
 
     private boolean inMatch(final UUID uuid) {

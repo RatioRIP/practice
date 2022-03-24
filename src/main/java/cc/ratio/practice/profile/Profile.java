@@ -32,6 +32,8 @@ public class Profile {
 
     public boolean build;
 
+    public long pearlCooldown;
+
     public Profile(final UUID uuid) {
         this.uuid = uuid;
         this.state = ProfileState.LOBBY;

@@ -151,7 +151,8 @@ public class Match {
         this.teams.forEach(uuids::addAll);
 
         return uuids.stream()
-                .map(uuid -> profileRepository.find(uuid).get())
+                .map(uuid -> profileRepository.find(uuid).orElse(null))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 

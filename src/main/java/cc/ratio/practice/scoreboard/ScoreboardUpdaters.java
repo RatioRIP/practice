@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ScoreboardUpdaters {
 
-    public static final String TITLE = "&4&lRATIO";
+    public static final String TITLE = "&4&lRatio &7[Practice]";
     private static final String LINE = "&c&m---------------------";
     private static final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
     private static final QueueRepository queueRepository = Services.get(QueueRepository.class).get();
@@ -32,17 +32,8 @@ public class ScoreboardUpdaters {
         final int queueing = queueRepository.queues.stream().map(queue -> queue.getPlayers().size()).reduce(0, Integer::sum);
 
         // title
-        if (state == ProfileState.LOBBY) {
-            objective.setDisplayName(TITLE);
-        }
+        objective.setDisplayName(TITLE);
 
-        if (state == ProfileState.QUEUE) {
-            objective.setDisplayName(TITLE + " &7- &fQueueing");
-        }
-
-        if (state == ProfileState.PLAYING) {
-            objective.setDisplayName(TITLE);
-        }
 
         // lines
         lines.add(LINE);

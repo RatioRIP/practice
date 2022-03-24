@@ -1,10 +1,11 @@
 package cc.ratio.practice.kit;
 
-import cc.ratio.practice.util.InventoryUtil;
 import me.lucko.helper.mongo.external.morphia.annotations.*;
+import me.lucko.helper.serialize.InventorySerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import javax.swing.*;
 import java.util.Arrays;
 
 @Entity(value = "kits", noClassnameStored = true)
@@ -37,16 +38,16 @@ public class Kit {
 
     @PrePersist
     public void serialize() {
-        this._display = InventoryUtil.serializeItemStack(this.display);
-        this._contents = InventoryUtil.serializeInventory(this.contents);
-        this._armor = InventoryUtil.serializeInventory(this.armor);
+        this._display = InventorySerialization.encodeItemStackToString(this.display);
+        this._contents = InventorySerialization.encodeItemStacksToString(this.contents);
+        this._armor = InventorySerialization.encodeItemStacksToString(this.armor);
     }
 
     @PostLoad
     public void deserialize() {
-        this.display = InventoryUtil.deserializeItemStack(this._display);
-        this.contents = InventoryUtil.deserializeInventory(this._contents);
-        this.armor = InventoryUtil.deserializeInventory(this._armor);
+        this.display = InventorySerialization.decodeItemStack(this._display);
+        this.contents = InventorySerialization.decodeItemStacks(this._contents);
+        this.armor = InventorySerialization.decodeItemStacks(this._armor);
     }
 
     @Override

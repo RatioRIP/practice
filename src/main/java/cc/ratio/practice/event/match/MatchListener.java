@@ -110,7 +110,7 @@ public class MatchListener implements TerminableModule {
 
                     match.stop(StopReason.END, match.getTeam(winner.getUniqueId()), match.getOpponents(winner.getUniqueId()));
 
-                    match.msg("&c" + loser.getName() + " was killed by &a" + winner.getName());
+                    match.msg("&f" + loser.getName() + " &cwas killed by &f" + winner.getName());
                 })
 
                 .bindWith(consumer);

@@ -8,8 +8,9 @@ import me.lucko.helper.terminable.module.TerminableModule;
 import javax.annotation.Nonnull;
 
 public class KitCommandsModule implements TerminableModule {
+
     @Override
-    public void setup(@Nonnull final TerminableConsumer consumer) {
+    public void setup(@Nonnull TerminableConsumer consumer) {
         Commands.create()
                 .assertPlayer()
                 .assertPermission("command.kit")
@@ -72,6 +73,5 @@ public class KitCommandsModule implements TerminableModule {
                 .description("View a kits inventory")
                 .handler(new ViewKitInventoryHandler())
                 .registerAndBind(consumer, "viewkitinventory");
-
     }
 }

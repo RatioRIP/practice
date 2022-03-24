@@ -1,0 +1,25 @@
+# Notes
+
+• Stay Consistent (You use finals in very random spots, and it is not consistent)
+• Stop leaving spaces (Angers Kyle)
+• We should probably stop using streams so much as it can cause a lot of lag issues (Kyle Smart, I know shocking)
+
+# Common Issues
+• When a player leaves the server they still exist in the match
+• You can queue yourself (hilarious)
+
+# TODO
+• Add cooldowns
+• Add elo system
+• Finish the match system
+• Leaderboards (RestAPI with Python is a possibility)
+• Specator System
+• StaffMode (Silent to detect cheaters)
+• Tournaments
+• Party System
+• Clans
+• Kit Editor
+• Custom Events (Sumo, Spleef etc)
+• Boxing gamemode (Easy to get people to advertise with tiktok & Youtube shorts)
+
+• When a task has been completed reply next to it with this '✔'

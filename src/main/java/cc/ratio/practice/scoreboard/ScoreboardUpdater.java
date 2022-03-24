@@ -16,26 +16,22 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreboardUpdaters {
+public class ScoreboardUpdater {
 
     public static final String TITLE = "&4&lRatio &7[Practice]";
     private static final String LINE = "&c&m---------------------";
     private static final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
     private static final QueueRepository queueRepository = Services.get(QueueRepository.class).get();
-    private static final MatchRepository matchRepository = Services.get(MatchRepository.class).get();
+    private static final MatchRepository matchRepository = Services.get(MatchRepository.class).get(); // Make sure to use this dummy
 
-    public static void update(final Player player, final ScoreboardObjective objective, final ProfileState state) {
+    public static void update(Player player, ScoreboardObjective objective, ProfileState state) {
         final List<String> lines = new ArrayList<>();
 
         final int online = Bukkit.getOnlinePlayers().size();
         final int playing = 0;
         final int queueing = queueRepository.queues.stream().map(queue -> queue.getPlayers().size()).reduce(0, Integer::sum);
 
-        // title
         objective.setDisplayName(TITLE);
-
-
-        // lines
         lines.add(LINE);
 
         if (state.isLobby()) {
@@ -69,5 +65,4 @@ public class ScoreboardUpdaters {
 
         objective.applyLines(lines);
     }
-
 }

@@ -33,5 +33,4 @@ public class LobbyItems {
     public static final Map<Integer, ItemStack> QUEUE_ITEMS = new HashMap<Integer, ItemStack>() {{
         this.put(8, LEAVE_QUEUE_ITEM);
     }};
-
 }

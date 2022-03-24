@@ -18,7 +18,7 @@ public class ViewKitInventoryHandler implements FunctionalCommandHandler<Player>
     public final KitRepository kitRepository = Services.get(KitRepository.class).get();
 
     @Override
-    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(CommandContext<Player> c) throws CommandInterruptException {
         final String name = c.arg(0).parseOrFail(String.class);
 
         final Optional<Kit> optional = this.kitRepository.find(name);
@@ -30,6 +30,7 @@ public class ViewKitInventoryHandler implements FunctionalCommandHandler<Player>
             final Kit kit = optional.get();
 
             new Gui(c.sender(), 6, "Viewing Kit " + kit.name) {
+
                 @Override
                 public void redraw() {
                     {
@@ -55,5 +56,4 @@ public class ViewKitInventoryHandler implements FunctionalCommandHandler<Player>
             }.open();
         }
     }
-
 }

@@ -28,5 +28,4 @@ public class ProfileRepository implements Repository<Profile, UUID> {
     public Optional<Profile> find(final UUID identifier) {
         return this.profiles.stream().filter(profile -> profile.uuid == identifier).findFirst();
     }
-
 }

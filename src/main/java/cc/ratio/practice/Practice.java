@@ -2,7 +2,7 @@ package cc.ratio.practice;
 
 import cc.ratio.practice.arena.ArenaRepository;
 import cc.ratio.practice.command.arena.ArenaCommandsModule;
-import cc.ratio.practice.command.env.EnvCommandsModule;
+import cc.ratio.practice.command.env.EnvironmentCommandsModule;
 import cc.ratio.practice.command.kit.KitCommandsModule;
 import cc.ratio.practice.event.environment.EnvironmentListener;
 import cc.ratio.practice.event.lobby.LobbyListener;
@@ -23,7 +23,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class Practice extends ExtendedJavaPlugin implements MongoProvider {
 
-    public static Practice instance;
+    public transient static Practice instance;
 
     private MongoDatabaseCredentials credentials;
     private Mongo dataSource;
@@ -52,7 +52,7 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
 
         this.bindModule(new KitCommandsModule());
         this.bindModule(new ArenaCommandsModule());
-        this.bindModule(new EnvCommandsModule());
+        this.bindModule(new EnvironmentCommandsModule());
 
         this.bindModule(new EnvironmentListener());
         this.bindModule(new LobbyListener());
@@ -63,7 +63,6 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
             Schedulers.async().runRepeating(() -> {
 
                 profileRepository.profiles.forEach(Profile::scoreboardUpdate);
-
             }, 20L, 20L);
         }
     }

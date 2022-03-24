@@ -32,6 +32,7 @@ public class EnvironmentListener implements TerminableModule {
             Material.TRAP_DOOR,
             Material.FENCE_GATE
     );
+
     private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
 
     @Override

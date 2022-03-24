@@ -10,5 +10,4 @@ public enum ProfileState {
     public boolean isLobby() {
         return this == LOBBY || this == QUEUE || this == SPECTATING;
     }
-
 }

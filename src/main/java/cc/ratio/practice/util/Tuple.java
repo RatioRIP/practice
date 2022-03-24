@@ -9,5 +9,4 @@ public class Tuple<A, B> {
         this.a = a;
         this.b = b;
     }
-
 }

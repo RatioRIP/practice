@@ -83,15 +83,13 @@ public class QueueGui extends Gui {
 
                                     try {
                                         match.start();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+                                    } catch (Exception exception) {
+                                        exception.printStackTrace();
                                         match.stop(StopReason.ERROR, null, null);
                                     }
                                 }
-
                             });
-                })
-                .forEach(this::addItem);
-    }
 
+                }).forEach(this::addItem);
+    }
 }

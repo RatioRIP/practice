@@ -6,7 +6,13 @@ import org.bukkit.potion.PotionEffect;
 
 public class PlayerUtilities {
 
-    public static void reset(final Player player) {
+    /**
+     * Reset the {@link Player}
+     *
+     * @param player the player.
+     */
+
+    public static void reset(Player player) {
         player.setHealth(20);
         player.setFoodLevel(20);
         player.getInventory().clear();
@@ -18,5 +24,4 @@ public class PlayerUtilities {
                 .forEach(player::removePotionEffect);
         player.setGameMode(GameMode.SURVIVAL);
     }
-
 }

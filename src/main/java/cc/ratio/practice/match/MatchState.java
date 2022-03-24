@@ -4,7 +4,5 @@ public enum MatchState {
 
     STARTING,
     PLAYING;
-
     // TODO: Add ending state
-
 }

@@ -9,5 +9,4 @@ public interface Repository<T, I> {
     boolean remove(T t);
 
     Optional<T> find(I identifier);
-
 }

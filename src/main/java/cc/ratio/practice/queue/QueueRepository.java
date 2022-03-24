@@ -32,5 +32,4 @@ public class QueueRepository implements Repository<Queue, Tuple<Kit, Boolean>> {
                 .filter(queue -> (queue.kit == identifier.a) && (queue.ranked == identifier.b))
                 .findFirst();
     }
-
 }

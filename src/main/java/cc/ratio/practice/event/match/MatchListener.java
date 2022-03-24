@@ -1,6 +1,5 @@
 package cc.ratio.practice.event.match;
 
-import cc.ratio.practice.event.lobby.handler.InteractEventHandler;
 import cc.ratio.practice.match.Match;
 import cc.ratio.practice.match.MatchRepository;
 import cc.ratio.practice.match.MatchState;
@@ -17,12 +16,14 @@ import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -175,8 +176,7 @@ public class MatchListener implements TerminableModule {
                                 Collections.singletonList(match.getTeam(loser.getUniqueId()))
                         );
                     }
-                })
-                .bindWith(consumer);
+                }).bindWith(consumer);
 
         Events.subscribe(PlayerInteractEvent.class)
                 // is player in a match?
@@ -246,5 +246,4 @@ public class MatchListener implements TerminableModule {
 
         return profile.match;
     }
-
 }

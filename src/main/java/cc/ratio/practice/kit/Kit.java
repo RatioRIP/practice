@@ -30,11 +30,22 @@ public class Kit {
     public String _armor;
 
     public Kit() {
+        // TODO: Alex, another empty constructor (Explain)
     }
 
-    public Kit(final String name) {
+    /**
+     * Constructor to create a new {@link Kit}
+     *
+     * @param name the name.
+     */
+
+    public Kit(String name) {
         this.name = name;
     }
+
+    /**
+     * Serialize the kit data.
+     */
 
     @PrePersist
     public void serialize() {
@@ -42,6 +53,10 @@ public class Kit {
         this._contents = InventorySerialization.encodeItemStacksToString(this.contents);
         this._armor = InventorySerialization.encodeItemStacksToString(this.armor);
     }
+
+    /**
+     * Deserialize the kit data.
+     */
 
     @PostLoad
     public void deserialize() {
@@ -61,6 +76,12 @@ public class Kit {
                 ", armor=" + Arrays.toString(this.armor) +
                 '}';
     }
+
+    /**
+     * Apply the {@link Kit} contents to the {@link Player}
+     *
+     * @param player the player.
+     */
 
     public void apply(Player player) {
         player.getInventory().setArmorContents(this.armor);

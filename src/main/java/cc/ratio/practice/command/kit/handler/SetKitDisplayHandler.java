@@ -15,7 +15,7 @@ public class SetKitDisplayHandler implements FunctionalCommandHandler<Player> {
     public final KitRepository kitRepository = Services.get(KitRepository.class).get();
 
     @Override
-    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(CommandContext<Player> c) throws CommandInterruptException {
         final String name = c.arg(0).parseOrFail(String.class);
 
         final Optional<Kit> optional = this.kitRepository.find(name);

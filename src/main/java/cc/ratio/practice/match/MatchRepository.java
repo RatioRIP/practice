@@ -15,18 +15,17 @@ public class MatchRepository implements Repository<Match, UUID> {
     }
 
     @Override
-    public boolean put(final Match match) {
+    public boolean put(Match match) {
         return this.matches.add(match);
     }
 
     @Override
-    public boolean remove(final Match match) {
+    public boolean remove(Match match) {
         return this.matches.remove(match);
     }
 
     @Override
-    public Optional<Match> find(final UUID identifier) {
+    public Optional<Match> find(UUID identifier) {
         return this.matches.stream().filter(match -> match.uuid == identifier).findFirst();
     }
-
 }

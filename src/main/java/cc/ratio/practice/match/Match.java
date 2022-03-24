@@ -32,7 +32,16 @@ public class Match {
     private final Kit kit;
     public MatchState state;
 
-    public Match(final UUID uuid, final Kit kit, final Arena arena, final List<Team> teams) {
+    /**
+     * Constructor for a {@link Match}
+     *
+     * @param uuid the unique identifier.
+     * @param kit the kit.
+     * @param arena the arena.
+     * @param teams the teams.
+     */
+
+    public Match(UUID uuid, Kit kit, Arena arena, List<Team> teams) {
         this.uuid = uuid;
         this.kit = kit;
         this.arena = arena;
@@ -41,6 +50,12 @@ public class Match {
         this.state = MatchState.STARTING;
         this.countdown = new AtomicInteger(3);
     }
+
+    /**
+     * Start a {@link Match}
+     *
+     * @throws Exception the exception to throw if an error occurs.
+     */
 
     public void start() throws Exception {
         // associate spawnpoint with team
@@ -83,6 +98,14 @@ public class Match {
 
         }, 10L, 20L);
     }
+
+    /**
+     * Stop a {@link Match}
+     *
+     * @param reason the reason.
+     * @param winner the winner.
+     * @param losers the losers.
+     */
 
     public void stop(StopReason reason, Team winner, List<Team> losers) {
         if (reason == StopReason.ERROR) {

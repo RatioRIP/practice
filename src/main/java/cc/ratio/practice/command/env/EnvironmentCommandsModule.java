@@ -14,7 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-public class EnvCommandsModule implements TerminableModule {
+public class EnvironmentCommandsModule implements TerminableModule {
 
     private final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
 

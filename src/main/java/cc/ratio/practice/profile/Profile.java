@@ -4,7 +4,7 @@ import cc.ratio.practice.lobby.LobbyItems;
 import cc.ratio.practice.match.Match;
 import cc.ratio.practice.profile.account.Account;
 import cc.ratio.practice.queue.Queue;
-import cc.ratio.practice.scoreboard.ScoreboardUpdaters;
+import cc.ratio.practice.scoreboard.ScoreboardUpdater;
 import cc.ratio.practice.util.PlayerUtilities;
 import me.lucko.helper.Services;
 import me.lucko.helper.mongo.Mongo;
@@ -34,7 +34,13 @@ public class Profile {
 
     public long pearlCooldown;
 
-    public Profile(final UUID uuid) {
+    /**
+     * Constructor to create a new {@link Profile}
+     *
+     * @param uuid the unique identifier.
+     */
+
+    public Profile(UUID uuid) {
         this.uuid = uuid;
         this.state = ProfileState.LOBBY;
 
@@ -45,6 +51,12 @@ public class Profile {
         this.loadAccount();
     }
 
+    /**
+     * Load the {@link Account}
+     *
+     * @return the account.
+     */
+
     public Account loadAccount() {
         final Mongo mongo = Services.get(Mongo.class).get();
         final Datastore datastore = mongo.getMorphiaDatastore();
@@ -53,13 +65,11 @@ public class Profile {
                 .filter("uuid", this.uuid)
                 .get();
 
-        // if account exists, load it
         if (account != null) {
             this.account = account;
             return account;
         }
 
-        // create new account
         this.account = new Account(this.uuid);
         this.account.name = this.toPlayer().getName();
 
@@ -68,6 +78,9 @@ public class Profile {
         return this.account;
     }
 
+    /**
+     * Save the {@link Account}
+     */
 
     public void save() {
         final Mongo mongo = Services.get(Mongo.class).get();
@@ -86,8 +99,12 @@ public class Profile {
         this.scoreboardUpdate();
     }
 
+    /**
+     * Update the {@link ScoreboardUpdater}
+     */
+
     public void scoreboardUpdate() {
-        ScoreboardUpdaters.update(this.toPlayer(), this.scoreboardObjective, this.state);
+        ScoreboardUpdater.update(this.toPlayer(), this.scoreboardObjective, this.state);
     }
 
     public void lobbyInit() {
@@ -100,12 +117,19 @@ public class Profile {
         LobbyItems.LOBBY_ITEMS.forEach((slot, item) -> {
             this.toPlayer().getInventory().setItem(slot, item);
         });
-
     }
+
+    /**
+     * Teleport a {@link Player} to the 'world' spawn location.
+     */
 
     public void lobbyTeleport() {
         this.toPlayer().teleport(Bukkit.getWorld("world").getSpawnLocation());
     }
+
+    /**
+     * Update the scoreboard for a {@link Player} when they join a {@link Queue}
+     */
 
     public void queueInit() {
         this.state = ProfileState.QUEUE;
@@ -117,6 +141,12 @@ public class Profile {
             this.toPlayer().getInventory().setItem(slot, item);
         });
     }
+
+    /**
+     * Get the {@link Player} by a {@link UUID}
+     *
+     * @return the player.
+     */
 
     public Player toPlayer() {
         return Bukkit.getPlayer(this.uuid);

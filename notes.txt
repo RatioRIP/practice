@@ -13,7 +13,7 @@
 • Add elo system
 • Finish the match system
 • Leaderboards (RestAPI with Python is a possibility)
-• Specator System
+• Spectator System
 • StaffMode (Silent to detect cheaters)
 • Tournaments
 • Party System
@@ -21,5 +21,6 @@
 • Kit Editor
 • Custom Events (Sumo, Spleef etc)
 • Boxing gamemode (Easy to get people to advertise with tiktok & Youtube shorts)
+• Make match ending when a player gets damaged, not when a player damages someone (fixes fall/enderpearl damage bugs)
 
 • When a task has been completed reply next to it with this '✔'

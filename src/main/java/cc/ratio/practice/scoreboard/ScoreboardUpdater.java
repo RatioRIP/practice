@@ -14,36 +14,42 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ScoreboardUpdater {
 
-    public static final String TITLE = "&4&lRatio &7[Practice]";
+    private static final String TITLE = "&4&lRatio &7[Practice]";
     private static final String LINE = "&c&m---------------------";
+
     private static final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
     private static final QueueRepository queueRepository = Services.get(QueueRepository.class).get();
-    private static final MatchRepository matchRepository = Services.get(MatchRepository.class).get(); // Make sure to use this dummy
+    private static final MatchRepository matchRepository = Services.get(MatchRepository.class).get();
 
-    public static void update(Player player, ScoreboardObjective objective, ProfileState state) {
-        final List<String> lines = new ArrayList<>();
+    public static void update(final Player player, final ScoreboardObjective objective, final ProfileState state) {
+        List<String> lines = new ArrayList<>();
 
-        final int online = Bukkit.getOnlinePlayers().size();
-        final int playing = 0;
-        final int queueing = queueRepository.queues.stream().map(queue -> queue.getPlayers().size()).reduce(0, Integer::sum);
+        int online = Bukkit.getOnlinePlayers().size();
+        int playing = matchRepository.matches.size();
+        int queueing = queueRepository.queues.stream().map(queue -> queue.players.size()).reduce(0, Integer::sum);
 
         objective.setDisplayName(TITLE);
+
         lines.add(LINE);
 
         if (state.isLobby()) {
             lines.add("&4Online: &f" + online);
-            lines.add("&4Playing: &f" + playing);
             lines.add("&4Queueing: &f" + queueing);
+            lines.add("&4Playing: &f" + playing);
             lines.add("&r&r");
             lines.add("&4Coins: &f420");
 
             if (state == ProfileState.QUEUE) {
-                final Queue queue = profileRepository.find(player.getUniqueId()).get().queue;
-                final String rankity = queue.ranked ? "&cRanked" : "&bUnranked";
+                Queue queue = profileRepository.find(player.getUniqueId()).get().queue;
+                String rankity = queue.ranked ? "&cRanked" : "&bUnranked";
+
                 lines.add("&r&r&r");
                 lines.add("Queueing for:");
                 lines.add(rankity + " " + queue.kit.name);
@@ -52,11 +58,26 @@ public class ScoreboardUpdater {
 
         if (state == ProfileState.PLAYING) {
             Match match = profileRepository.find(player.getUniqueId()).get().match;
-            List<Team> opponents = match.getOpponents(player.getUniqueId());
+            Team team = match.getTeam(player.getUniqueId());
 
-            String opponent = opponents.get(0).formatName(ChatColor.WHITE);
+            Collection<Team> opponents = match.getOpponents(team);
+            Collection<Player> players = match.getAllPlayers()
+                    .stream()
+                    .filter(p -> p != player)
+                    .collect(Collectors.toList());
 
-            lines.add("&cOpponent: &f" + opponent);
+            if(players.size() > 1) {
+                lines.add("&cOpponents:");
+
+                opponents.forEach(opponent -> {
+                    opponent.players.forEach(it -> {
+                        lines.add("  - &c" + it.getName());
+                    });
+                });
+            } else {
+                lines.add("&cOpponent: &f" + opponents.stream().findFirst().get().formatName(ChatColor.WHITE));
+            }
+
         }
 
         lines.add("&r");

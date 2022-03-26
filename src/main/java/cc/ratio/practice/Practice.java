@@ -23,7 +23,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class Practice extends ExtendedJavaPlugin implements MongoProvider {
 
-    public transient static Practice instance;
+    public static transient Practice instance;
 
     private MongoDatabaseCredentials credentials;
     private Mongo dataSource;
@@ -44,11 +44,11 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
 
         this.provideService(ConfigurationSection.class, this.getConfig());
 
+        this.provideService(ArenaRepository.class, new ArenaRepository());
+        this.provideService(MatchRepository.class, new MatchRepository());
         this.provideService(ProfileRepository.class, new ProfileRepository());
         this.provideService(QueueRepository.class, new QueueRepository());
         this.provideService(KitRepository.class, new KitRepository());
-        this.provideService(MatchRepository.class, new MatchRepository());
-        this.provideService(ArenaRepository.class, new ArenaRepository());
 
         this.bindModule(new KitCommandsModule());
         this.bindModule(new ArenaCommandsModule());
@@ -59,7 +59,7 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
         this.bindModule(new MatchListener());
 
         {
-            ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
+            final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
             Schedulers.async().runRepeating(() -> {
 
                 profileRepository.profiles.forEach(Profile::scoreboardUpdate);
@@ -68,12 +68,17 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
     }
 
     @Override
+    protected void disable() {
+
+    }
+
+    @Override
     public Mongo getMongo() {
         return this.dataSource;
     }
 
     @Override
-    public Mongo getMongo(final MongoDatabaseCredentials credentials) {
+    public Mongo getMongo(MongoDatabaseCredentials credentials) {
         return new HelperMongo(credentials);
     }
 

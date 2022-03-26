@@ -1,40 +1,53 @@
 package cc.ratio.practice.match.team;
 
-import cc.ratio.practice.profile.Profile;
-import cc.ratio.practice.profile.ProfileRepository;
-import me.lucko.helper.Services;
+import cc.ratio.practice.match.Match;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class Team extends ArrayList<UUID> {
+public class Team {
 
-    private static final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
+    public final Collection<Player> players;
+    public boolean eliminated = false;
 
-    public Team(UUID... uuids) {
-        Collections.addAll(this, uuids);
+    public Team(Collection<Player> players) {
+        this.players = players;
     }
 
-    public List<Profile> toProfiles() {
-        return this.stream()
-                .map(uuid -> profileRepository.find(uuid).orElse(null))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
-
+    /**
+     * Formats the player names
+     * @param color the color that the player names should be in
+     * @return a string of a list of player names
+     */
     public String formatName(ChatColor color) {
-        return this.toProfiles()
-                .stream()
-                .map(Profile::toPlayer)
+        return this.players.stream()
                 .map(Player::getName)
                 .map(s -> color + s)
                 .collect(Collectors.joining(ChatColor.GRAY + ", "));
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
+    /**
+     * Streams the players
+     * @return a stream of the players
+     */
+    public Collection<Player> getPlayers() {
+        return this.players;
     }
+
+    /**
+     * Gets the players that are alive
+     * @param match the match
+     * @return a collection of the players that are alive
+     */
+    public Collection<Player> getAlivePlayers(Match match) {
+        return this.getPlayers()
+                .stream()
+                .filter(player -> !match.isEliminated(player.getUniqueId()))
+                .collect(Collectors.toList());
+    }
+
+
 }

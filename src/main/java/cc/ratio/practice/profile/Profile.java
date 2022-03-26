@@ -12,6 +12,7 @@ import me.lucko.helper.mongo.external.morphia.Datastore;
 import me.lucko.helper.scoreboard.Scoreboard;
 import me.lucko.helper.scoreboard.ScoreboardObjective;
 import me.lucko.helper.scoreboard.ScoreboardProvider;
+import me.lucko.helper.text3.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -37,7 +38,7 @@ public class Profile {
     /**
      * Constructor to create a new {@link Profile}
      *
-     * @param uuid the unique identifier.
+     * @param uuid the unique identifier
      */
 
     public Profile(UUID uuid) {
@@ -52,14 +53,14 @@ public class Profile {
     }
 
     /**
-     * Load the {@link Account}
+     * Load the {@link Account} from mongo
      *
-     * @return the account.
+     * @return the account
      */
 
     public Account loadAccount() {
-        final Mongo mongo = Services.get(Mongo.class).get();
-        final Datastore datastore = mongo.getMorphiaDatastore();
+        Mongo mongo = Services.get(Mongo.class).get();
+        Datastore datastore = mongo.getMorphiaDatastore();
 
         Account account = datastore.find(Account.class)
                 .filter("uuid", this.uuid)
@@ -79,18 +80,21 @@ public class Profile {
     }
 
     /**
-     * Save the {@link Account}
+     * Save the {@link Account} to mongo
      */
 
     public void save() {
-        final Mongo mongo = Services.get(Mongo.class).get();
-        final Datastore datastore = mongo.getMorphiaDatastore();
+        Mongo mongo = Services.get(Mongo.class).get();
+        Datastore datastore = mongo.getMorphiaDatastore();
 
         datastore.save(this.account);
     }
 
+    /**
+     * Initialize the scoreboard for the player
+     */
     public void scoreboardInit() {
-        final Scoreboard scoreboard = Services.get(ScoreboardProvider.class)
+        Scoreboard scoreboard = Services.get(ScoreboardProvider.class)
                 .orElseGet(() -> Services.load(ScoreboardProvider.class))
                 .getScoreboard();
 
@@ -107,10 +111,13 @@ public class Profile {
         ScoreboardUpdater.update(this.toPlayer(), this.scoreboardObjective, this.state);
     }
 
+    /*
+     * Give the player the items for the lobby state
+     */
     public void lobbyInit() {
         this.state = ProfileState.LOBBY;
         this.queue = null;
-        this.scoreboardUpdate();
+        this.match = null;
 
         PlayerUtilities.reset(this.toPlayer());
 
@@ -120,35 +127,49 @@ public class Profile {
     }
 
     /**
-     * Teleport a {@link Player} to the 'world' spawn location.
+     * Give the player the items for the queue state
      */
-
-    public void lobbyTeleport() {
-        this.toPlayer().teleport(Bukkit.getWorld("world").getSpawnLocation());
-    }
-
-    /**
-     * Update the scoreboard for a {@link Player} when they join a {@link Queue}
-     */
-
-    public void queueInit() {
+    public void queueInit(Queue queue) {
         this.state = ProfileState.QUEUE;
-        this.scoreboardUpdate();
+        this.queue = queue;
+        this.match = null;
+
+        queue.add(this.toPlayer());
 
         PlayerUtilities.reset(this.toPlayer());
 
         LobbyItems.QUEUE_ITEMS.forEach((slot, item) -> {
             this.toPlayer().getInventory().setItem(slot, item);
         });
+
+        String rankity = queue.ranked ? "&cRanked" : "&bUnranked";
+
+        this.msg("&eYou've joined the " + rankity + " &f" + queue.kit.name + " &equeue.");
     }
 
     /**
-     * Get the {@link Player} by a {@link UUID}
+     * Messages the player
+     */
+    public void msg(String... msg) {
+        for (String line : msg) {
+            this.toPlayer().sendMessage(Text.colorize(line));
+        }
+    }
+
+    /**
+     * Teleport a {@link Player} to the 'world' spawn location.
+     */
+    public void teleportToLobby() {
+        this.toPlayer().teleport(Bukkit.getWorld("world").getSpawnLocation());
+    }
+
+    /**
+     * Get the {@link Player} that associates to this profile by their {@link UUID}
      *
      * @return the player.
      */
-
     public Player toPlayer() {
         return Bukkit.getPlayer(this.uuid);
     }
+
 }

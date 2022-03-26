@@ -19,12 +19,12 @@ public class EnvironmentCommandsModule implements TerminableModule {
     private final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
 
     @Override
-    public void setup(@Nonnull TerminableConsumer consumer) {
+    public void setup(@Nonnull final TerminableConsumer consumer) {
         Commands.create()
                 .assertOp()
                 .assertPlayer()
                 .handler(c -> {
-                    final boolean buildMode = !this.isBuildMode(c.sender().getUniqueId());
+                    boolean buildMode = !this.isBuildMode(c.sender().getUniqueId());
                     this.setBuildMode(c.sender().getUniqueId(), buildMode);
 
                     c.reply(buildMode ? "&aBuild Mode Enabled" : "&cBuild Mode Disabled");
@@ -42,14 +42,14 @@ public class EnvironmentCommandsModule implements TerminableModule {
                 .bindWith(consumer);
     }
 
-    public void setBuildMode(UUID uuid, boolean value) {
-        final Profile profile = this.profileRepository.find(uuid).get();
+    public void setBuildMode(final UUID uuid, final boolean value) {
+        Profile profile = this.profileRepository.find(uuid).get();
 
         profile.build = value;
     }
 
-    public boolean isBuildMode(UUID uuid) {
-        final Profile profile = this.profileRepository.find(uuid).get();
+    public boolean isBuildMode(final UUID uuid) {
+        Profile profile = this.profileRepository.find(uuid).get();
 
         return profile.build;
     }

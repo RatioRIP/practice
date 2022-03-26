@@ -16,20 +16,20 @@ public class SetKitBuildHandler implements FunctionalCommandHandler<Player> {
     public final KitRepository kitRepository = Services.get(KitRepository.class).get();
 
     @Override
-    public void handle(CommandContext<Player> c) throws CommandInterruptException {
-        final String name = c.arg(0).parseOrFail(String.class);
+    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+        String name = c.arg(0).parseOrFail(String.class);
 
-        final Optional<Kit> optional = this.kitRepository.find(name);
+        Optional<Kit> optional = this.kitRepository.find(name);
 
         if (!optional.isPresent()) {
             c.reply("&cKit doesn't exist");
             return;
         } else {
-            final Kit kit = optional.get();
+            Kit kit = optional.get();
 
             boolean value = !kit.build;
 
-            final Argument valueArgument = c.arg(1);
+            Argument valueArgument = c.arg(1);
 
             if (valueArgument.isPresent()) {
                 value = valueArgument.parseOrFail(Boolean.class);

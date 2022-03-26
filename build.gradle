@@ -30,6 +30,8 @@ dependencies {
             'me.lucko:helper-mongo:1.2.0',
             'me.lucko:helper-profiles:1.2.0'
     )
+
+    implementation 'one.util:streamex:0.8.1'
 }
 
 shadowJar {

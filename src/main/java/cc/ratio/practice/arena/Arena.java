@@ -18,7 +18,7 @@ public class Arena {
      * @param name the name.
      */
 
-    public Arena(String name) {
+    public Arena(final String name) {
         this.name = name;
     }
 }

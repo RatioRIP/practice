@@ -18,7 +18,7 @@ public class KitRepository implements Repository<Kit, String> {
     private final Mongo mongo = Services.get(Mongo.class).get();
     private final Datastore datastore = this.mongo.getMorphiaDatastore();
 
-    private final QueueRepository queueRepository = Services.get(QueueRepository.class).get();
+    private static final QueueRepository queueRepository = Services.get(QueueRepository.class).get();
 
     public KitRepository() {
         this.kits = new ArrayList<>();
@@ -34,8 +34,8 @@ public class KitRepository implements Repository<Kit, String> {
     }
 
     @Override
-    public boolean put(final Kit kit) {
-        final boolean result = this.kits.add(kit);
+    public boolean put(Kit kit) {
+        boolean result = this.kits.add(kit);
 
         this.datastore.save(kit);
         this.createQueue(kit);
@@ -44,8 +44,8 @@ public class KitRepository implements Repository<Kit, String> {
     }
 
     @Override
-    public boolean remove(final Kit kit) {
-        final boolean result = this.kits.remove(kit);
+    public boolean remove(Kit kit) {
+        boolean result = this.kits.remove(kit);
 
         this.datastore.delete(kit);
         this.deleteQueue(kit);
@@ -53,31 +53,31 @@ public class KitRepository implements Repository<Kit, String> {
         return result;
     }
 
-    private void deleteQueue(final Kit kit) {
+    private void deleteQueue(Kit kit) {
         this.deleteQueue(kit, true);
         this.deleteQueue(kit, false);
     }
 
-    private void deleteQueue(final Kit kit, final boolean ranked) {
-        final Optional<Queue> optionalQueue = this.queueRepository.find(new Tuple<>(kit, ranked));
+    private void deleteQueue(Kit kit, boolean ranked) {
+        Optional<Queue> optionalQueue = queueRepository.find(new Tuple<>(kit, ranked));
 
-        optionalQueue.ifPresent(this.queueRepository::remove);
+        optionalQueue.ifPresent(queueRepository::remove);
     }
 
-    private void createQueue(final Kit kit) {
-        final Queue rankedQueue = new Queue(kit, true);
-        final Queue unrankedQueue = new Queue(kit, false);
+    private void createQueue(Kit kit) {
+        Queue rankedQueue = new Queue(kit, true);
+        Queue unrankedQueue = new Queue(kit, false);
 
-        this.queueRepository.put(rankedQueue);
-        this.queueRepository.put(unrankedQueue);
+        queueRepository.put(rankedQueue);
+        queueRepository.put(unrankedQueue);
     }
 
     @Override
-    public Optional<Kit> find(final String identifier) {
+    public Optional<Kit> find(String identifier) {
         return this.kits.stream().filter(kit -> kit.name.equalsIgnoreCase(identifier)).findFirst();
     }
 
-    public void save(final Kit kit) {
+    public void save(Kit kit) {
         this.datastore.save(kit);
     }
 }

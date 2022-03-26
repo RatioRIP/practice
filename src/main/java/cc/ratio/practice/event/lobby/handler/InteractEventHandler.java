@@ -15,12 +15,12 @@ import java.util.function.Consumer;
 
 public class InteractEventHandler implements Consumer<PlayerInteractEvent> {
 
-    private final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
+    private static final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
 
     @Override
-    public void accept(final PlayerInteractEvent playerInteractEvent) {
-        final Player player = playerInteractEvent.getPlayer();
-        final ItemStack item = playerInteractEvent.getPlayer().getItemInHand();
+    public void accept(PlayerInteractEvent playerInteractEvent) {
+        Player player = playerInteractEvent.getPlayer();
+        ItemStack item = playerInteractEvent.getPlayer().getItemInHand();
 
         if (item.isSimilar(LobbyItems.UNRANKED_QUEUE_ITEM)) {
             new QueueGui(player, false).open();
@@ -33,7 +33,7 @@ public class InteractEventHandler implements Consumer<PlayerInteractEvent> {
         }
 
         if (item.isSimilar(LobbyItems.LEAVE_QUEUE_ITEM)) {
-            final Profile profile = this.profileRepository.find(player.getUniqueId()).get();
+            Profile profile = profileRepository.find(player.getUniqueId()).get();
 
             profile.queue.remove(profile.toPlayer());
             profile.queue = null;

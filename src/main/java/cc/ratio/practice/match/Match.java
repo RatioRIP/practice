@@ -10,14 +10,17 @@ import cc.ratio.practice.util.PlayerUtilities;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.Services;
 import me.lucko.helper.text3.Text;
+import one.util.streamex.StreamEx;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Match {
 
@@ -29,8 +32,9 @@ public class Match {
     public final List<Team> teams;
     public final Arena arena;
     public final AtomicInteger countdown;
-    private final Kit kit;
+    public final Kit kit;
     public MatchState state;
+    public final List<Elimination> eliminations;
 
     /**
      * Constructor for a {@link Match}
@@ -49,6 +53,8 @@ public class Match {
 
         this.state = MatchState.STARTING;
         this.countdown = new AtomicInteger(3);
+
+        this.eliminations = new ArrayList<>();
     }
 
     /**
@@ -58,7 +64,7 @@ public class Match {
      */
 
     public void start() throws Exception {
-        // associate spawnpoint with team
+        // associate spawnpoints with teams
         Map<Team, Location> locations = new HashMap<>();
 
         if (this.teams.size() > this.arena.spawnpoints.size()) {
@@ -70,20 +76,22 @@ public class Match {
             locations.put(this.teams.get(i), this.arena.spawnpoints.get(i));
         }
 
+        // teleport all teams to their spawnpoints
         locations.forEach((team, location) -> {
-            team.toProfiles().stream().map(Profile::toPlayer).forEach(player -> player.teleport(location));
+            team.players.forEach(player -> player.teleport(location));
         });
 
-        this.getProfiles().forEach(profile -> {
+        // get the players ready
+        this.getAllProfiles().forEach(profile -> {
             profile.state = ProfileState.PLAYING;
             profile.match = this;
 
             PlayerUtilities.reset(profile.toPlayer());
             this.kit.apply(profile.toPlayer());
-
-            profile.scoreboardUpdate();
+            profile.toPlayer().updateInventory();
         });
 
+        // countdown
         Schedulers.sync().runRepeating(task -> {
             int count = this.countdown.getAndDecrement();
 
@@ -108,87 +116,207 @@ public class Match {
      */
 
     public void stop(StopReason reason, Team winner, List<Team> losers) {
+        // if the match was stopped due to an error, inform the players
         if (reason == StopReason.ERROR) {
             this.msg("&cThe match has stopped due to an error");
         }
 
+        // if the match was forcefully stopped, inform the players
         if (reason == StopReason.FORCED) {
             this.msg("&cThis match has been forcefully stopped");
         }
 
+        // if the match ended, send the statistics
         if (reason == StopReason.END) {
-            final List<String> message = new ArrayList<>();
+            List<String> message = new ArrayList<>();
 
             message.add("&7&m--------------------------");
             message.add("&cGame Ended");
             message.add("\n");
-            message.add("&aWinner" + (winner.size() > 1 ? "s" : "") + ": &f" + winner.formatName(ChatColor.WHITE));
-            message.add("&cLoser" + (losers.size() > 1 ? "s" : "") + ": &f" +
-                    losers
+
+            String winnersAndLosers = "";
+            winnersAndLosers += "&aWinners: &f" + winner.formatName(ChatColor.WHITE);
+            winnersAndLosers += " &r⎜";
+            winnersAndLosers += "&cLosers: &f" + losers
                             .stream()
                             .map(team -> team.formatName(ChatColor.WHITE))
-                            .collect(Collectors.joining("&7, "))
-            );
+                            .collect(Collectors.joining("&7, "));
+
+            message.add(winnersAndLosers);
+
             message.add("&7&m--------------------------");
 
-            final String[] arr = message.toArray(new String[]{});
+            String[] arr = message.toArray(new String[]{});
 
             this.msg(arr);
         }
 
-        this.getProfiles().forEach(profile -> {
+        // match end routine
+
+        // teleport all players to the lobby
+        this.getAllProfiles().forEach(profile -> {
             profile.state = ProfileState.LOBBY;
 
             profile.lobbyInit();
-            profile.lobbyTeleport();
+            profile.teleportToLobby();
         });
 
         matchRepository.matches.remove(this);
     }
 
+
+    /**
+     * Eliminates a player from the match
+     */
+    public void eliminate(UUID uuid, Optional<UUID> killer) {
+        this.eliminations.add(new Elimination(uuid, killer));
+
+        Team team = this.getTeam(uuid);
+
+        if(team.getAlivePlayers(this).size() == 0) {
+            team.eliminated = true;
+        }
+
+        if(killer.isPresent()) {
+            this.msg("&c" + Bukkit.getPlayer(uuid).getName() + " was killed by " + Bukkit.getPlayer(killer.get()).getName());
+        } else {
+            this.msg("&c" + Bukkit.getPlayer(uuid).getName() + " disconnected");
+        }
+
+        if(this.canEnd()) {
+            this.stop(
+                    StopReason.END,
+                    this.getRemainingTeams().stream().findFirst().orElse(null),
+                    this.teams.stream().filter(it -> it.eliminated).collect(Collectors.toList())
+            );
+        }
+    }
+
+    /**
+     * Message all players in the match
+     */
     public void msg(String... lines) {
-        this.getPlayers().stream()
-                .filter(Objects::nonNull)
-                .forEach(player -> {
-                    for (String line : lines) {
-                        player.sendMessage(Text.colorize(line));
-                    }
-                });
+        this.getAllPlayers().forEach(player -> {
+            for (String line : lines) {
+                player.sendMessage(Text.colorize(line));
+            }
+        });
     }
 
-    public List<Player> getPlayers() {
-        // TODO: Optimize?
-        final List<UUID> uuids = new ArrayList<>();
+    /**
+     * Checks if the match can end
+     * @return whether the match can end
+     */
+    public boolean canEnd() {
+        return this.getRemainingTeams().size() == 1;
+    }
 
-        this.teams.forEach(uuids::addAll);
-
-        return uuids.stream()
-                .map(Bukkit::getPlayer)
+    /**
+     * Gets the remaining teams
+     * @return a stream of the remaining teams
+     */
+    public Collection<Team> getRemainingTeams() {
+        return this.teams.
+                stream().
+                filter(team -> !team.eliminated)
                 .collect(Collectors.toList());
     }
 
-    public List<Profile> getProfiles() {
-        // TODO: Optimize?
-        final List<UUID> uuids = new ArrayList<>();
+    /**
+     * Gets all eliminations from a given team
+     * @param team the team
+     * @return a map of the eliminations
+     */
+    public Collection<Elimination> getEliminations(Team team) {
+        return this.eliminations
+                .stream()
+                .filter(elimination -> team == this.getTeam(elimination.uuid))
+                .collect(Collectors.toList());
+    }
 
-        this.teams.forEach(uuids::addAll);
+    /**
+     * Gets the elimination (if existent) of a given player
+     * @param uuid the uuid of the player
+     * @return the elimination (nullable)
+     */
+    @Nullable
+    public Elimination getElimination(UUID uuid) {
+        return this.eliminations
+                .stream()
+                .filter(elimination -> elimination.uuid.equals(uuid))
+                .findFirst()
+                .orElse(null);
+    }
 
-        return uuids.stream()
-                .map(uuid -> profileRepository.find(uuid).orElse(null))
+    /**
+     * Checks if an entire team has been eliminated
+     * @param team the team
+     * @return whether the team has been eliminated
+     */
+    public boolean isTeamEliminated(Team team) {
+        return team.players
+                .stream()
+                .allMatch(player -> this.isEliminated(player.getUniqueId()));
+    }
+
+    /**
+     * Checks if a player is eliminated
+     * @param uuid the uuid of the player
+     * @return whether the player is eliminated
+     */
+    public boolean isEliminated(UUID uuid) {
+        return this.getElimination(uuid) != null;
+    }
+
+    /**
+     * Returns a collection of the players in the match
+     * @return the collection
+     */
+    public Collection<Player> getAllPlayers() {
+        StreamEx<Player> stream = StreamEx.empty();
+
+        for (Team team : this.teams) {
+            stream = stream.append(team.players);
+        }
+
+        return stream.collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of the profile in the match
+     * @return the list
+     */
+    public Collection<Profile> getAllProfiles() {
+        return this.getAllPlayers()
+                .stream()
+                .map(Player::getUniqueId)
+                .map(profileRepository::findOrNull)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Gets the team of a player
+     * @param uuid the uuid
+     * @return the team of the player
+     */
+    @Nullable
     public Team getTeam(UUID uuid) {
         return this.teams.stream()
-                .filter(team -> team.contains(uuid))
+                .filter(team -> team.players.contains(uuid))
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
-    public List<Team> getOpponents(UUID uuid) {
-        return this.teams.stream()
-                .filter(team -> !team.contains(uuid))
+    /**
+     * Gets a list of the opponents of a team
+     * @param team the team
+     * @return the list
+     */
+    public Collection<Team> getOpponents(Team team) {
+        return this.teams
+                .stream()
+                .filter(it -> it != team)
                 .collect(Collectors.toList());
     }
 }

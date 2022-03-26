@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 public class KitCommandsModule implements TerminableModule {
 
     @Override
-    public void setup(@Nonnull TerminableConsumer consumer) {
+    public void setup(@Nonnull final TerminableConsumer consumer) {
         Commands.create()
                 .assertPlayer()
                 .assertPermission("command.kit")

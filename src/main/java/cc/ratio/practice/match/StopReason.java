@@ -4,5 +4,5 @@ public enum StopReason {
 
     END,
     FORCED,
-    ERROR;
+    ERROR
 }

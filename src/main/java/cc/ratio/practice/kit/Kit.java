@@ -1,15 +1,21 @@
 package cc.ratio.practice.kit;
 
+import cc.ratio.practice.match.Match;
+import cc.ratio.practice.match.MatchRepository;
+import me.lucko.helper.Services;
 import me.lucko.helper.mongo.external.morphia.annotations.*;
 import me.lucko.helper.serialize.InventorySerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import javax.swing.*;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
-@Entity(value = "kits", noClassnameStored = true)
+@Entity(value = "kits")
 public class Kit {
+
+    private static final MatchRepository matchRepository = Services.get(MatchRepository.class).get();
 
     @Id
     public String name;
@@ -88,4 +94,15 @@ public class Kit {
         player.getInventory().setContents(this.contents);
         player.updateInventory();
     }
+
+    /**
+     * Get a stream of the matches that are being played with this kit
+     * @return
+     */
+    public Collection<Match> getMatches() {
+        return matchRepository.matches.stream()
+                .filter(match -> match.kit == this)
+                .collect(Collectors.toList());
+    }
+
 }

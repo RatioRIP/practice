@@ -28,23 +28,23 @@ public class ArenaRepository implements Repository<Arena, String> {
     }
 
     @Override
-    public boolean put(Arena arena) {
-        final boolean result = this.arenas.add(arena);
+    public boolean put(final Arena arena) {
+        boolean result = this.arenas.add(arena);
 
         this.save();
         return result;
     }
 
     @Override
-    public boolean remove(Arena arena) {
-        final boolean result = this.arenas.remove(arena);
+    public boolean remove(final Arena arena) {
+        boolean result = this.arenas.remove(arena);
 
         this.save();
         return result;
     }
 
     @Override
-    public Optional<Arena> find(String identifier) {
+    public Optional<Arena> find(final String identifier) {
         return this.arenas.stream().filter(arena -> arena.name.equalsIgnoreCase(identifier)).findFirst();
     }
 

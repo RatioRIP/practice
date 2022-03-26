@@ -15,22 +15,22 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
     public final ArenaRepository arenaRepository = Services.get(ArenaRepository.class).get();
 
     @Override
-    public void handle(CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
         c.arg(0).assertPresent();
         c.arg(1).assertPresent();
 
-        final String name = c.arg(0).parseOrFail(String.class);
+        String name = c.arg(0).parseOrFail(String.class);
 
-        final Optional<Arena> optional = this.arenaRepository.find(name);
+        Optional<Arena> optional = this.arenaRepository.find(name);
 
         if (!optional.isPresent()) {
             c.reply("&cArena doesn't exist");
             return;
         }
 
-        final Arena arena = optional.get();
+        Arena arena = optional.get();
 
-        final String subcommand = c.arg(1).parseOrFail(String.class);
+        String subcommand = c.arg(1).parseOrFail(String.class);
 
         if (subcommand.equalsIgnoreCase("list")) {
             c.reply("&c" + arena.name + " spawnpoints:");
@@ -50,7 +50,7 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
 
         if (subcommand.equalsIgnoreCase("delete")) {
             c.arg(2).assertPresent();
-            final int index = c.arg(2).parseOrFail(Integer.class);
+            int index = c.arg(2).parseOrFail(Integer.class);
 
             arena.spawnpoints.remove(index);
             this.arenaRepository.save();

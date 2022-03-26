@@ -18,21 +18,22 @@ public class JoinEventHandler implements Consumer<PlayerJoinEvent> {
             "&dDiscord: &fhttps://discord.ratio.cc/",
             "&bTwitter: &fhttps://twitter.com/RatioCC/"
     };
-    private final ProfileRepository repository = Services.get(ProfileRepository.class).get();
+
+    private static final ProfileRepository repository = Services.get(ProfileRepository.class).get();
 
     @Override
-    public void accept(final PlayerJoinEvent playerJoinEvent) {
-        final Player player = playerJoinEvent.getPlayer();
+    public void accept(PlayerJoinEvent playerJoinEvent) {
+        Player player = playerJoinEvent.getPlayer();
 
-        final Profile profile = new Profile(playerJoinEvent.getPlayer().getUniqueId());
+        Profile profile = new Profile(playerJoinEvent.getPlayer().getUniqueId());
         this.repository.put(profile);
 
-        for (final String line : WELCOME_MESSAGE) {
+        for (String line : WELCOME_MESSAGE) {
             player.sendMessage(Text.colorize(line));
         }
 
         profile.scoreboardInit();
         profile.lobbyInit();
-        profile.lobbyTeleport();
+        profile.teleportToLobby();
     }
 }

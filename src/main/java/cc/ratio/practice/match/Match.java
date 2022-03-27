@@ -135,9 +135,9 @@ public class Match {
             message.add("\n");
 
             String winnersAndLosers = "";
-            winnersAndLosers += "&aWinners: &f" + winner.formatName(ChatColor.WHITE);
-            winnersAndLosers += " &r⎜";
-            winnersAndLosers += "&cLosers: &f" + losers
+            winnersAndLosers += "&aWinner" + (winner.players.size() > 1 ? "s" : "") + ": &f" + winner.formatName(ChatColor.WHITE);
+            winnersAndLosers += " &c⎜ ";
+            winnersAndLosers += "&cLoser" + (losers.size() > 1 ? "s" : "") + ": &f" + losers
                             .stream()
                             .map(team -> team.formatName(ChatColor.WHITE))
                             .collect(Collectors.joining("&7, "));
@@ -303,7 +303,7 @@ public class Match {
     @Nullable
     public Team getTeam(UUID uuid) {
         return this.teams.stream()
-                .filter(team -> team.players.contains(uuid))
+                .filter(team -> team.players.stream().anyMatch(player -> player.getUniqueId().equals(uuid)))
                 .findFirst()
                 .orElse(null);
     }

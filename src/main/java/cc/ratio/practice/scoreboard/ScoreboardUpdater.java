@@ -60,6 +60,11 @@ public class ScoreboardUpdater {
             Match match = profileRepository.find(player.getUniqueId()).get().match;
             Team team = match.getTeam(player.getUniqueId());
 
+            System.out.println(player.getName() + " team:");
+//            System.out.println(team.formatName(ChatColor.WHITE));
+
+            System.out.println(team);
+
             Collection<Team> opponents = match.getOpponents(team);
             Collection<Player> players = match.getAllPlayers()
                     .stream()

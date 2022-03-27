@@ -19,7 +19,7 @@ public class EnvironmentCommandsModule implements TerminableModule {
     private final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
 
     @Override
-    public void setup(@Nonnull final TerminableConsumer consumer) {
+    public void setup(@Nonnull TerminableConsumer consumer) {
         Commands.create()
                 .assertOp()
                 .assertPlayer()
@@ -42,14 +42,14 @@ public class EnvironmentCommandsModule implements TerminableModule {
                 .bindWith(consumer);
     }
 
-    public void setBuildMode(final UUID uuid, final boolean value) {
-        Profile profile = this.profileRepository.find(uuid).get();
+    public void setBuildMode(UUID uuid, boolean value) {
+        Profile profile = this.profileRepository.findOrNull(uuid);
 
         profile.build = value;
     }
 
-    public boolean isBuildMode(final UUID uuid) {
-        Profile profile = this.profileRepository.find(uuid).get();
+    public boolean isBuildMode(UUID uuid) {
+        Profile profile = this.profileRepository.findOrNull(uuid);
 
         return profile.build;
     }

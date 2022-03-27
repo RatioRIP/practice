@@ -17,7 +17,7 @@ public class ListKitsHandler implements FunctionalCommandHandler<Player> {
     public final KitRepository kitRepository = Services.get(KitRepository.class).get();
 
     @Override
-    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(CommandContext<Player> c) throws CommandInterruptException {
         c.reply("&cKits:");
         this.kitRepository.kits.forEach(kit -> {
             TextComponent clickComponent = TextComponent.builder()

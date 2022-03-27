@@ -24,11 +24,11 @@ public class ArenaRepository implements Repository<Arena, String> {
                 }
         );
 
-        this.arenas = this.storageHandler.load().orElseGet(() -> new ArrayList());
+        this.arenas = this.storageHandler.load().orElseGet(ArrayList::new);
     }
 
     @Override
-    public boolean put(final Arena arena) {
+    public boolean put(Arena arena) {
         boolean result = this.arenas.add(arena);
 
         this.save();
@@ -36,7 +36,7 @@ public class ArenaRepository implements Repository<Arena, String> {
     }
 
     @Override
-    public boolean remove(final Arena arena) {
+    public boolean remove(Arena arena) {
         boolean result = this.arenas.remove(arena);
 
         this.save();
@@ -44,7 +44,7 @@ public class ArenaRepository implements Repository<Arena, String> {
     }
 
     @Override
-    public Optional<Arena> find(final String identifier) {
+    public Optional<Arena> find(String identifier) {
         return this.arenas.stream().filter(arena -> arena.name.equalsIgnoreCase(identifier)).findFirst();
     }
 

@@ -18,8 +18,6 @@ public class QueueButton extends Item {
 
     private static final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
 
-    private final Queue queue;
-
     public QueueButton(Queue queue) {
         super(
 
@@ -31,8 +29,6 @@ public class QueueButton extends Item {
                 createItem(queue)
 
         );
-
-        this.queue = queue;
     }
 
     /**

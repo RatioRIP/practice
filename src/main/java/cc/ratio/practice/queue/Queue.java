@@ -65,7 +65,7 @@ public class Queue {
 
             try {
                 match.start();
-            } catch (final Exception exception) {
+            } catch (Exception exception) {
                 exception.printStackTrace();
                 match.stop(StopReason.ERROR, null, null);
             }
@@ -85,9 +85,9 @@ public class Queue {
     @Override
     public String toString() {
         return "Queue{" +
-                "kit=" + kit +
-                ", ranked=" + ranked +
-                ", players=" + players +
+                "kit=" + this.kit +
+                ", ranked=" + this.ranked +
+                ", players=" + this.players +
                 '}';
     }
 }

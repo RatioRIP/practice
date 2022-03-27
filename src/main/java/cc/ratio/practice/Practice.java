@@ -59,7 +59,7 @@ public class Practice extends ExtendedJavaPlugin implements MongoProvider {
         this.bindModule(new MatchListener());
 
         {
-            final ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
+            ProfileRepository profileRepository = Services.get(ProfileRepository.class).get();
             Schedulers.async().runRepeating(() -> {
 
                 profileRepository.profiles.forEach(Profile::scoreboardUpdate);

@@ -36,27 +36,27 @@ public class LobbyListener implements TerminableModule {
 //                .bindWith(consumer);
 
         Events.subscribe(FoodLevelChangeEvent.class)
-                .filter(event -> this.repository.find(event.getEntity().getUniqueId()).get().state.isLobby())
+                .filter(event -> repository.findOrNull(event.getEntity().getUniqueId()).state.isLobby())
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(PlayerItemDamageEvent.class)
-                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state.isLobby())
+                .filter(event -> repository.findOrNull(event.getPlayer().getUniqueId()).state.isLobby())
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(PlayerDropItemEvent.class)
-                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state.isLobby())
+                .filter(event -> repository.findOrNull(event.getPlayer().getUniqueId()).state.isLobby())
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(PlayerPickupItemEvent.class)
-                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state.isLobby())
+                .filter(event -> repository.findOrNull(event.getPlayer().getUniqueId()).state.isLobby())
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(InventoryClickEvent.class)
-                .filter(event -> this.repository.find(event.getWhoClicked().getUniqueId()).get().state.isLobby())
+                .filter(event -> repository.findOrNull(event.getWhoClicked().getUniqueId()).state.isLobby())
                 .filter(event ->
                         Objects.equals(event.getClickedInventory(), event.getWhoClicked().getOpenInventory())
                                 ||
@@ -66,25 +66,25 @@ public class LobbyListener implements TerminableModule {
 
         Events.subscribe(EntityDamageEvent.class)
                 .filter(event -> event.getCause() != EntityDamageEvent.DamageCause.VOID)
-                .filter(event -> this.repository.find(event.getEntity().getUniqueId()).get().state.isLobby())
+                .filter(event -> repository.findOrNull(event.getEntity().getUniqueId()).state.isLobby())
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(EntityDamageByEntityEvent.class)
                 .filter(event -> event.getDamager().getType() == EntityType.PLAYER)
-                .filter(event -> this.repository.find(event.getDamager().getUniqueId()).get().state.isLobby())
+                .filter(event -> repository.findOrNull(event.getDamager().getUniqueId()).state.isLobby())
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
         Events.subscribe(PlayerInteractEvent.class)
                 .filter(event -> event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
                 .filter(event -> event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() != Material.AIR)
-                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state.isLobby())
+                .filter(event -> repository.findOrNull(event.getPlayer().getUniqueId()).state.isLobby())
                 .handler(new InteractEventHandler())
                 .bindWith(consumer);
 
         Events.subscribe(PlayerMoveEvent.class)
-                .filter(event -> this.repository.find(event.getPlayer().getUniqueId()).get().state.isLobby())
+                .filter(event -> repository.findOrNull(event.getPlayer().getUniqueId()).state.isLobby())
                 .filter(event -> event.getTo().getY() <= 0)
                 .handler(event -> {
                     event.setTo(event.getPlayer().getWorld().getSpawnLocation().add(new Vector(0, 5, 0)));

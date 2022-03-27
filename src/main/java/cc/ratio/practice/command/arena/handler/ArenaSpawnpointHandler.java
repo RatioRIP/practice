@@ -15,7 +15,7 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
     public final ArenaRepository arenaRepository = Services.get(ArenaRepository.class).get();
 
     @Override
-    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(CommandContext<Player> c) throws CommandInterruptException {
         c.arg(0).assertPresent();
         c.arg(1).assertPresent();
 

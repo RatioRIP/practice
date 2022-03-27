@@ -34,7 +34,7 @@ public class MatchListener implements TerminableModule {
     private static final MatchRepository matchRepository = Services.get(MatchRepository.class).get();
 
     @Override
-    public void setup(@Nonnull final TerminableConsumer consumer) {
+    public void setup(@Nonnull TerminableConsumer consumer) {
         // cancel move event if game hasn't started yet
         Events.subscribe(PlayerMoveEvent.class)
                 .filter(EventFilters.ignoreSameBlock())

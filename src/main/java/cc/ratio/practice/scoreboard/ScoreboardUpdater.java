@@ -28,7 +28,7 @@ public class ScoreboardUpdater {
     private static final QueueRepository queueRepository = Services.get(QueueRepository.class).get();
     private static final MatchRepository matchRepository = Services.get(MatchRepository.class).get();
 
-    public static void update(final Player player, final ScoreboardObjective objective, final ProfileState state) {
+    public static void update(Player player, ScoreboardObjective objective, ProfileState state) {
         List<String> lines = new ArrayList<>();
 
         int online = Bukkit.getOnlinePlayers().size();

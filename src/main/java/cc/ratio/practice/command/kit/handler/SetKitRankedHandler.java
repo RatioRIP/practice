@@ -16,7 +16,7 @@ public class SetKitRankedHandler implements FunctionalCommandHandler<Player> {
     public final KitRepository kitRepository = Services.get(KitRepository.class).get();
 
     @Override
-    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(CommandContext<Player> c) throws CommandInterruptException {
         String name = c.arg(0).parseOrFail(String.class);
 
         Optional<Kit> optional = this.kitRepository.find(name);

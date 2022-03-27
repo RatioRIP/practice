@@ -15,7 +15,7 @@ public class DeleteArenaHandler implements FunctionalCommandHandler<Player> {
     public final ArenaRepository arenaRepository = Services.get(ArenaRepository.class).get();
 
     @Override
-    public void handle(final CommandContext<Player> c) throws CommandInterruptException {
+    public void handle(CommandContext<Player> c) throws CommandInterruptException {
         String name = c.arg(0).parseOrFail(String.class);
 
         Optional<Arena> optional = this.arenaRepository.find(name);

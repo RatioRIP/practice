@@ -7,6 +7,8 @@
 # Common Issues
 • When a player leaves the server they still exist in the match
 • You can queue yourself (hilarious)
+• When you die by pearling into something (or, someone), it says you disconnected
+
 
 # TODO
 • Add cooldowns

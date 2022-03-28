@@ -130,7 +130,7 @@ public class Match {
         if (reason == StopReason.END) {
             List<String> message = new ArrayList<>();
 
-            message.add("&7&m--------------------------");
+            message.add("&7&m--------------------------------------");
             message.add("&cGame Ended");
             message.add("\n");
 
@@ -144,7 +144,7 @@ public class Match {
 
             message.add(winnersAndLosers);
 
-            message.add("&7&m--------------------------");
+            message.add("&7&m--------------------------------------");
 
             String[] arr = message.toArray(new String[]{});
 

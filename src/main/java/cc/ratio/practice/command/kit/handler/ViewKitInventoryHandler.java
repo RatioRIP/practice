@@ -25,7 +25,6 @@ public class ViewKitInventoryHandler implements FunctionalCommandHandler<Player>
 
         if (!optional.isPresent()) {
             c.reply("&cKit doesn't exist");
-            return;
         } else {
             Kit kit = optional.get();
 

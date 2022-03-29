@@ -21,9 +21,8 @@ public class SetKitInventoryHandler implements FunctionalCommandHandler<Player> 
 
         Optional<Kit> optional = this.kitRepository.find(name);
 
-        if (!optional.isPresent()) {
+        if (optional.isEmpty()) {
             c.reply("&cKit doesn't exist");
-            return;
         } else {
             Kit kit = optional.get();
 

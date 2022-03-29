@@ -2,7 +2,7 @@ package cc.ratio.practice;
 
 import cc.ratio.practice.arena.ArenaRepository;
 import cc.ratio.practice.command.arena.ArenaCommandsModule;
-import cc.ratio.practice.command.env.EnvironmentCommandsModule;
+import cc.ratio.practice.command.environment.EnvironmentCommandsModule;
 import cc.ratio.practice.command.kit.KitCommandsModule;
 import cc.ratio.practice.event.environment.EnvironmentListener;
 import cc.ratio.practice.event.lobby.LobbyListener;

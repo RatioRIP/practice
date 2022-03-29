@@ -56,7 +56,6 @@ public class ArenaSpawnpointHandler implements FunctionalCommandHandler<Player> 
             this.arenaRepository.save();
 
             c.reply("Arena '" + arena.name + "' modified");
-            return;
         }
     }
 }

@@ -3,8 +3,6 @@ package cc.ratio.practice.event.match;
 import cc.ratio.practice.match.Match;
 import cc.ratio.practice.match.MatchRepository;
 import cc.ratio.practice.match.MatchState;
-import cc.ratio.practice.match.StopReason;
-import cc.ratio.practice.match.team.Team;
 import cc.ratio.practice.profile.Profile;
 import cc.ratio.practice.profile.ProfileRepository;
 import cc.ratio.practice.profile.ProfileState;
@@ -15,16 +13,15 @@ import me.lucko.helper.event.filter.EventHandlers;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -89,7 +86,7 @@ public class MatchListener implements TerminableModule {
     private boolean hasCooldown(UUID uuid) {
         Optional<Profile> profileOptional = profileRepository.find(uuid);
 
-        if (!profileOptional.isPresent()) {
+        if (profileOptional.isEmpty()) {
             return false;
         }
 
@@ -101,7 +98,7 @@ public class MatchListener implements TerminableModule {
     private boolean inMatch(UUID uuid) {
         Optional<Profile> profileOptional = profileRepository.find(uuid);
 
-        if (!profileOptional.isPresent()) {
+        if (profileOptional.isEmpty()) {
             return false;
         }
 
@@ -116,7 +113,6 @@ public class MatchListener implements TerminableModule {
         }
 
         Profile profile = profileRepository.find(uuid).get();
-
         return profile.match;
     }
 }

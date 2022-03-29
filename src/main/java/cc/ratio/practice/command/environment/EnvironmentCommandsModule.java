@@ -1,4 +1,4 @@
-package cc.ratio.practice.command.env;
+package cc.ratio.practice.command.environment;
 
 import cc.ratio.practice.profile.Profile;
 import cc.ratio.practice.profile.ProfileRepository;
@@ -8,6 +8,7 @@ import me.lucko.helper.Services;
 import me.lucko.helper.event.filter.EventHandlers;
 import me.lucko.helper.terminable.TerminableConsumer;
 import me.lucko.helper.terminable.module.TerminableModule;
+import org.bukkit.GameMode;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -46,6 +47,12 @@ public class EnvironmentCommandsModule implements TerminableModule {
         Profile profile = this.profileRepository.findOrNull(uuid);
 
         profile.build = value;
+
+        if (value) {
+            profile.setGamemode(GameMode.CREATIVE);
+        } else {
+            profile.setGamemode(GameMode.SURVIVAL);
+        }
     }
 
     public boolean isBuildMode(UUID uuid) {

@@ -14,6 +14,7 @@ import me.lucko.helper.scoreboard.ScoreboardObjective;
 import me.lucko.helper.scoreboard.ScoreboardProvider;
 import me.lucko.helper.text3.Text;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 
@@ -172,4 +173,13 @@ public class Profile {
         return Bukkit.getPlayer(this.uuid);
     }
 
+    /**
+     * Set the {@link GameMode} of the {@link Player}
+     *
+     * @param gameMode the gameMode.
+     */
+
+    public void setGamemode(GameMode gameMode) {
+        Bukkit.getPlayer(this.uuid).setGameMode(gameMode);
+    }
 }

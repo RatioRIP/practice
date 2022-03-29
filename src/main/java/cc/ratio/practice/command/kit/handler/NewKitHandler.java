@@ -21,7 +21,6 @@ public class NewKitHandler implements FunctionalCommandHandler<Player> {
 
         if (this.kitRepository.find(name).isPresent()) {
             c.reply("&cKit already exists");
-            return;
         } else {
             Kit kit = new Kit(name);
 

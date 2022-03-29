@@ -11,6 +11,7 @@ import me.lucko.helper.terminable.module.TerminableModule;
 import javax.annotation.Nonnull;
 
 public class ArenaCommandsModule implements TerminableModule {
+
     @Override
     public void setup(@Nonnull TerminableConsumer consumer) {
         Commands.create()

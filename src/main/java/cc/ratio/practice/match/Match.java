@@ -6,7 +6,7 @@ import cc.ratio.practice.match.team.Team;
 import cc.ratio.practice.profile.Profile;
 import cc.ratio.practice.profile.ProfileRepository;
 import cc.ratio.practice.profile.ProfileState;
-import cc.ratio.practice.util.PlayerUtilities;
+import cc.ratio.practice.util.player.PlayerUtilities;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.Services;
 import me.lucko.helper.text3.Text;
@@ -20,7 +20,6 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Match {
 

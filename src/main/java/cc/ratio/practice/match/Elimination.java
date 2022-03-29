@@ -12,5 +12,4 @@ public class Elimination {
         this.uuid = uuid;
         this.killer = killer;
     }
-
 }

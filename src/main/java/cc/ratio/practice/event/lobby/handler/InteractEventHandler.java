@@ -41,8 +41,6 @@ public class InteractEventHandler implements Consumer<PlayerInteractEvent> {
 
             player.sendMessage(Text.colorize("&cYou've left the queue."));
             profile.lobbyInit();
-
-            return;
         }
     }
 }

@@ -26,7 +26,7 @@ public class JoinEventHandler implements Consumer<PlayerJoinEvent> {
         Player player = playerJoinEvent.getPlayer();
 
         Profile profile = new Profile(playerJoinEvent.getPlayer().getUniqueId());
-        this.repository.put(profile);
+        repository.put(profile);
 
         for (String line : WELCOME_MESSAGE) {
             player.sendMessage(Text.colorize(line));

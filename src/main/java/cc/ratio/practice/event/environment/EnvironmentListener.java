@@ -46,56 +46,47 @@ public class EnvironmentListener implements TerminableModule {
 
     @Override
     public void setup(@Nonnull TerminableConsumer consumer) {
-        // player join event
         Events.subscribe(PlayerJoinEvent.class)
                 .handler(new JoinEventHandler())
                 .bindWith(consumer);
 
-        // player quit event
         Events.subscribe(PlayerQuitEvent.class)
                 .filter(event -> profileRepository.find(event.getPlayer().getUniqueId()).isPresent())
                 .handler(new QuitEventHandler())
                 .bindWith(consumer);
 
-        // cancel interact event if player is using a forbidden item
         Events.subscribe(PlayerInteractEvent.class)
                 .filter(event -> event.getAction() == Action.RIGHT_CLICK_BLOCK)
                 .filter(event -> BLOCKED_ITEMS.contains(event.getClickedBlock().getType()))
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
-        // cancel weather event
         Events.subscribe(WeatherChangeEvent.class)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
-        // cancel mob spawn event
         Events.subscribe(CreatureSpawnEvent.class)
                 .handler(event -> event.setCancelled(true))
                 .bindWith(consumer);
 
-        // hunger change event
         Events.subscribe(FoodLevelChangeEvent.class)
                 .handler(event -> {
                     event.setFoodLevel(event.getFoodLevel() + 1);
                 })
                 .bindWith(consumer);
 
-        // cancel drop event
         Events.subscribe(PlayerDropItemEvent.class)
                 .filter(event -> this.inMatch(event.getPlayer().getUniqueId()))
                 .filter(event -> this.getMatch(event.getPlayer().getUniqueId()).state != MatchState.PLAYING)
                 .handler(EventHandlers.cancel())
                 .bindWith(consumer);
 
-        // cancel pickup event
         Events.subscribe(PlayerPickupItemEvent.class)
                 .filter(event -> this.inMatch(event.getPlayer().getUniqueId()))
                 .filter(event -> this.getMatch(event.getPlayer().getUniqueId()).state != MatchState.PLAYING)
                 .handler(EventHandlers.cancel())
                 .bindWith(consumer);
 
-        // cancel damage event
         Events.subscribe(EntityDamageEvent.class)
                 .filter(event -> event.getEntity().getType() == EntityType.PLAYER)
                 .filter(event -> this.inMatch(event.getEntity().getUniqueId()))
@@ -103,7 +94,6 @@ public class EnvironmentListener implements TerminableModule {
                 .handler(EventHandlers.cancel())
                 .bindWith(consumer);
 
-        // send players to spawn when respawning
         Events.subscribe(PlayerRespawnEvent.class)
                 .handler(event -> {
                     Profile profile = profileRepository.findOrNull(event.getPlayer().getUniqueId());
@@ -117,12 +107,11 @@ public class EnvironmentListener implements TerminableModule {
     private boolean inMatch(UUID uuid) {
         Optional<Profile> profileOptional = profileRepository.find(uuid);
 
-        if (!profileOptional.isPresent()) {
+        if (profileOptional.isEmpty()) {
             return false;
         }
 
         Profile profile = profileOptional.get();
-
         return profile.state == ProfileState.PLAYING && profile.match != null;
     }
 
@@ -132,8 +121,6 @@ public class EnvironmentListener implements TerminableModule {
         }
 
         Profile profile = profileRepository.find(uuid).get();
-
         return profile.match;
     }
-
 }

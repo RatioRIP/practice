@@ -20,19 +20,17 @@ public class QueueButton extends Item {
 
     public QueueButton(Queue queue) {
         super(
-
-                new HashMap<ClickType, Consumer<InventoryClickEvent>>() {{
+                new HashMap<>() {{
                     this.put(ClickType.LEFT, createClickHandler(queue));
                     this.put(ClickType.RIGHT, createClickHandler(queue));
                 }},
-
                 createItem(queue)
-
         );
     }
 
     /**
      * Creates a click handler for a given {@link Queue}
+     *
      * @param queue the queue
      * @return the click handler
      */
@@ -42,7 +40,6 @@ public class QueueButton extends Item {
             Profile profile = profileRepository.findOrNull(player.getUniqueId());
 
             profile.queueInit(queue);
-
             player.closeInventory();
         };
     }
@@ -64,5 +61,4 @@ public class QueueButton extends Item {
                 .lore("&7&m--------------------------------")
                 .build();
     }
-
 }

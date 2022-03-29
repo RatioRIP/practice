@@ -96,13 +96,13 @@ public class Kit {
     }
 
     /**
-     * Get a stream of the matches that are being played with this kit
-     * @return
+     * Get a stream of the matches that are being played with this {@link Kit}
+     *
+     * @return the matches.
      */
     public Collection<Match> getMatches() {
         return matchRepository.matches.stream()
                 .filter(match -> match.kit == this)
                 .collect(Collectors.toList());
     }
-
 }

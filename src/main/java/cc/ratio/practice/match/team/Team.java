@@ -30,6 +30,7 @@ public class Team {
 
     /**
      * Streams the players
+     *
      * @return a stream of the players
      */
     public Collection<Player> getPlayers() {
@@ -47,6 +48,4 @@ public class Team {
                 .filter(player -> !match.isEliminated(player.getUniqueId()))
                 .collect(Collectors.toList());
     }
-
-
 }

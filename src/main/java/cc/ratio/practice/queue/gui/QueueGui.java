@@ -19,12 +19,9 @@ public class QueueGui extends Gui {
 
     @Override
     public void redraw() {
-        Player player = this.getPlayer();
-
         this.queueRepository.queues
                 .stream()
                 .filter(queue -> queue.ranked == this.ranked)
                 .forEach(queue -> this.addItem(new QueueButton(queue)));
     }
-
 }

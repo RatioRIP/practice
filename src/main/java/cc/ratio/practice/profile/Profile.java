@@ -5,7 +5,7 @@ import cc.ratio.practice.match.Match;
 import cc.ratio.practice.profile.account.Account;
 import cc.ratio.practice.queue.Queue;
 import cc.ratio.practice.scoreboard.ScoreboardUpdater;
-import cc.ratio.practice.util.PlayerUtilities;
+import cc.ratio.practice.util.player.PlayerUtilities;
 import me.lucko.helper.Services;
 import me.lucko.helper.mongo.Mongo;
 import me.lucko.helper.mongo.external.morphia.Datastore;

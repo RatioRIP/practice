@@ -1,4 +1,4 @@
-package cc.ratio.practice.util;
+package cc.ratio.practice.util.player;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;

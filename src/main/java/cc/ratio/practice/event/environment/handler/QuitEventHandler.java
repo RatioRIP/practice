@@ -20,7 +20,7 @@ public class QuitEventHandler implements Consumer<PlayerQuitEvent> {
 
     @Override
     public void accept(PlayerQuitEvent playerQuitEvent) {
-        Profile profile = this.repository.find(playerQuitEvent.getPlayer().getUniqueId()).get();
+        Profile profile = repository.find(playerQuitEvent.getPlayer().getUniqueId()).get();
 
         profile.queue.remove(playerQuitEvent.getPlayer());
         profile.queue = null;

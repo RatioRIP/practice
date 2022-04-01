@@ -107,7 +107,7 @@ public class EnvironmentListener implements TerminableModule {
     private boolean inMatch(UUID uuid) {
         Optional<Profile> profileOptional = profileRepository.find(uuid);
 
-        if (profileOptional.isEmpty()) {
+        if (!profileOptional.isPresent()) {
             return false;
         }
 

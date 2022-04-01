@@ -20,7 +20,7 @@ public class QueueButton extends Item {
 
     public QueueButton(Queue queue) {
         super(
-                new HashMap<>() {{
+                new HashMap<ClickType, Consumer<InventoryClickEvent>>() {{
                     this.put(ClickType.LEFT, createClickHandler(queue));
                     this.put(ClickType.RIGHT, createClickHandler(queue));
                 }},

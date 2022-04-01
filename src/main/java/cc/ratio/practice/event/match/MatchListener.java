@@ -86,7 +86,7 @@ public class MatchListener implements TerminableModule {
     private boolean hasCooldown(UUID uuid) {
         Optional<Profile> profileOptional = profileRepository.find(uuid);
 
-        if (profileOptional.isEmpty()) {
+        if (!profileOptional.isPresent()) {
             return false;
         }
 
@@ -98,7 +98,7 @@ public class MatchListener implements TerminableModule {
     private boolean inMatch(UUID uuid) {
         Optional<Profile> profileOptional = profileRepository.find(uuid);
 
-        if (profileOptional.isEmpty()) {
+        if (!profileOptional.isPresent()) {
             return false;
         }
 

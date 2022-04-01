@@ -20,7 +20,7 @@ public class DeleteKitHandler implements FunctionalCommandHandler<Player> {
 
         Optional<Kit> optional = this.kitRepository.find(name);
 
-        if (optional.isEmpty()) {
+        if (!optional.isPresent()) {
             c.reply("&cKit doesn't exist");
         } else {
             Kit kit = optional.get();

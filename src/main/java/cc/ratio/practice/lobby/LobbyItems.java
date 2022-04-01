@@ -25,12 +25,12 @@ public class LobbyItems {
             .lore("&7Right click to leave the queue")
             .build();
 
-    public static final Map<Integer, ItemStack> LOBBY_ITEMS = new HashMap<>() {{
+    public static final Map<Integer, ItemStack> LOBBY_ITEMS = new HashMap<Integer, ItemStack>() {{
         this.put(0, UNRANKED_QUEUE_ITEM);
         this.put(1, RANKED_QUEUE_ITEM);
     }};
 
-    public static final Map<Integer, ItemStack> QUEUE_ITEMS = new HashMap<>() {{
+    public static final Map<Integer, ItemStack> QUEUE_ITEMS = new HashMap<Integer, ItemStack>() {{
         this.put(8, LEAVE_QUEUE_ITEM);
     }};
 }

@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 public class Queue {
 
     private static final ArenaRepository arenaRepository = Services.get(ArenaRepository.class).get();
+    private static final MatchRepository matchRepository = Services.get(MatchRepository.class).get();
 
     public final Kit kit;
     public final boolean ranked;
@@ -62,6 +63,7 @@ public class Queue {
 
             try {
                 match.start();
+                matchRepository.put(match);
             } catch (Exception exception) {
                 exception.printStackTrace();
                 match.stop(StopReason.ERROR, null, null);

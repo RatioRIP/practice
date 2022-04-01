@@ -37,6 +37,7 @@ public class Kit {
 
     public Kit() {
         // TODO: Alex, another empty constructor (Explain)
+        // Morphia needs this, Kyle.
     }
 
     /**
@@ -90,8 +91,9 @@ public class Kit {
      */
 
     public void apply(Player player) {
-        player.getInventory().setArmorContents(this.armor);
-        player.getInventory().setContents(this.contents);
+        player.getInventory().setArmorContents(this.armor.clone());
+        player.getInventory().setContents(this.contents.clone());
+        player.updateInventory();
     }
 
     /**

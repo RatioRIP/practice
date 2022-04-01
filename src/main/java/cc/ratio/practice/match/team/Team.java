@@ -48,4 +48,12 @@ public class Team {
                 .filter(player -> !match.isEliminated(player.getUniqueId()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "players=" + players +
+                ", eliminated=" + eliminated +
+                '}';
+    }
 }

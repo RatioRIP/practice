@@ -2,6 +2,7 @@ package cc.ratio.practice.util.player;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 public class PlayerUtilities {

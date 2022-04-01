@@ -9,10 +9,7 @@ import cc.ratio.practice.match.team.Team;
 import me.lucko.helper.Services;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Queue {
@@ -21,7 +18,7 @@ public class Queue {
 
     public final Kit kit;
     public final boolean ranked;
-    public final ArrayList<Player> players;
+    public final java.util.Queue<Player> players;
 
     /**
      * Constructor for a {@link Queue}
@@ -33,7 +30,7 @@ public class Queue {
     public Queue(Kit kit, boolean ranked) {
         this.kit = kit;
         this.ranked = ranked;
-        this.players = new ArrayList<>();
+        this.players = new LinkedList<>();
     }
 
     /**
@@ -43,12 +40,12 @@ public class Queue {
      */
 
     public void add(Player player) {
-        this.players.add(player);
+        this.players.offer(player);
 
         if (this.players.size() >= 2) {
             // TODO: i think there's something missing here
-            Player first = this.players.remove(0);
-            Player second = this.players.remove(0);
+            Player first = this.players.poll();
+            Player second = this.players.poll();
 
             Match match = new Match(
                     UUID.randomUUID(),

@@ -22,8 +22,10 @@ public class QuitEventHandler implements Consumer<PlayerQuitEvent> {
     public void accept(PlayerQuitEvent playerQuitEvent) {
         Profile profile = repository.find(playerQuitEvent.getPlayer().getUniqueId()).get();
 
-        profile.queue.remove(playerQuitEvent.getPlayer());
-        profile.queue = null;
+        if(profile.queue != null) {
+            profile.queue.remove(playerQuitEvent.getPlayer());
+            profile.queue = null;
+        }
 
         if(profile.match != null && profile.state == ProfileState.PLAYING) {
             UUID loser = playerQuitEvent.getPlayer().getUniqueId();

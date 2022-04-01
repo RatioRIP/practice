@@ -92,7 +92,6 @@ public class Kit {
     public void apply(Player player) {
         player.getInventory().setArmorContents(this.armor);
         player.getInventory().setContents(this.contents);
-        player.updateInventory();
     }
 
     /**

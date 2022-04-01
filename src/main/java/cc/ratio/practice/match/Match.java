@@ -83,11 +83,12 @@ public class Match {
         // get the players ready
         this.getAllProfiles().forEach(profile -> {
             profile.state = ProfileState.PLAYING;
-            profile.match = this;
+            profile.match = Match.this;
+        });
 
-            PlayerUtilities.reset(profile.toPlayer());
-            this.kit.apply(profile.toPlayer());
-            profile.toPlayer().updateInventory();
+        this.getAllPlayers().forEach(player -> {
+            PlayerUtilities.reset(player);
+            this.kit.apply(player);
         });
 
         // countdown
@@ -135,7 +136,7 @@ public class Match {
 
             String winnersAndLosers = "";
             winnersAndLosers += "&aWinner" + (winner.players.size() > 1 ? "s" : "") + ": &f" + winner.formatName(ChatColor.WHITE);
-            winnersAndLosers += " &c⎜ ";
+            winnersAndLosers += " &8⎜ ";
             winnersAndLosers += "&cLoser" + (losers.size() > 1 ? "s" : "") + ": &f" + losers
                             .stream()
                             .map(team -> team.formatName(ChatColor.WHITE))

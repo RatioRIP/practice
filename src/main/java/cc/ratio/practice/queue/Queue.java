@@ -43,7 +43,7 @@ public class Queue {
     public void add(Player player) {
         this.players.offer(player);
 
-        if (this.players.size() >= 2) {
+        if (this.players.size() == 2) {
             // TODO: i think there's something missing here
             Player first = this.players.poll();
             Player second = this.players.poll();
@@ -56,8 +56,8 @@ public class Queue {
                     arenaRepository.getRandom(),
 
                     Arrays.asList(
-                            new Team(Collections.singletonList(first)),
-                            new Team(Collections.singletonList(second))
+                            new Team(Arrays.asList(first)),
+                            new Team(Arrays.asList(second))
                     )
             );
 

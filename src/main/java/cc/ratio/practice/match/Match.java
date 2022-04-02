@@ -14,6 +14,7 @@ import one.util.streamex.StreamEx;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
@@ -83,6 +84,7 @@ public class Match {
         // get the players ready
         this.getAllProfiles().forEach(profile -> {
             profile.state = ProfileState.PLAYING;
+            profile.queue = null;
             profile.match = Match.this;
         });
 
@@ -100,8 +102,14 @@ public class Match {
                 task.stop();
 
                 this.msg("&aGame Started");
+                this.getAllPlayers().forEach(player -> {
+                    player.playSound(player.getLocation(), Sound.NOTE_PIANO, 2.0f, 2.0f);
+                });
             } else {
                 this.msg("&a" + count);
+                this.getAllPlayers().forEach(player -> {
+                    player.playSound(player.getLocation(), Sound.NOTE_PIANO, 2.0f, 1.0f);
+                });
             }
 
         }, 10L, 20L);
@@ -277,6 +285,7 @@ public class Match {
 
         for (Team team : this.teams) {
             stream = stream.append(team.players);
+            System.out.println(team.players);
         }
 
         return stream.collect(Collectors.toList());

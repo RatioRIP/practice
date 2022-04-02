@@ -22,7 +22,6 @@ public class QueueButton extends Item {
         super(
                 new HashMap<ClickType, Consumer<InventoryClickEvent>>() {{
                     this.put(ClickType.LEFT, createClickHandler(queue));
-                    this.put(ClickType.RIGHT, createClickHandler(queue));
                 }},
                 createItem(queue)
         );
@@ -39,8 +38,8 @@ public class QueueButton extends Item {
             Player player = (Player) event.getWhoClicked();
             Profile profile = profileRepository.findOrNull(player.getUniqueId());
 
-            profile.queueInit(queue);
             player.closeInventory();
+            profile.queueInit(queue);
         };
     }
 

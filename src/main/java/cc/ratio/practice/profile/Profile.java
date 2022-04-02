@@ -133,7 +133,6 @@ public class Profile {
     public void queueInit(Queue queue) {
         this.state = ProfileState.QUEUE;
         this.queue = queue;
-        this.match = null;
 
         queue.add(this.toPlayer());
 

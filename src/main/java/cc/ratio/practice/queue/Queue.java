@@ -56,8 +56,8 @@ public class Queue {
                     arenaRepository.getRandom(),
 
                     Arrays.asList(
-                            new Team(Arrays.asList(first)),
-                            new Team(Arrays.asList(second))
+                            new Team(Arrays.asList(first.getUniqueId())),
+                            new Team(Arrays.asList(second.getUniqueId()))
                     )
             );
 

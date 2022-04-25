@@ -43,7 +43,6 @@ public class MatchListener implements TerminableModule {
 
         Events.subscribe(PlayerDeathEvent.class)
                 .filter(event -> this.inMatch(event.getEntity().getUniqueId()))
-                .filter(event -> this.getMatch(event.getEntity().getUniqueId()).state == MatchState.PLAYING)
                 .handler(event -> {
                     Player player = event.getEntity();
                     Match match = this.getMatch(player.getUniqueId());
@@ -60,6 +59,7 @@ public class MatchListener implements TerminableModule {
                     } else {
                         match.eliminate(player.getUniqueId(), Optional.empty());
                     }
+
                 })
                 .bindWith(consumer);
 
@@ -96,15 +96,7 @@ public class MatchListener implements TerminableModule {
     }
 
     private boolean inMatch(UUID uuid) {
-        Optional<Profile> profileOptional = profileRepository.find(uuid);
-
-        if (!profileOptional.isPresent()) {
-            return false;
-        }
-
-        Profile profile = profileOptional.get();
-
-        return profile.state == ProfileState.PLAYING && profile.match != null;
+        return this.getMatch(uuid) != null;
     }
 
     private Match getMatch(UUID uuid) {

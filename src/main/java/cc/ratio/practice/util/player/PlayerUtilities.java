@@ -14,11 +14,13 @@ public class PlayerUtilities {
      */
 
     public static void reset(Player player) {
-        player.setHealth(20);
+        player.setHealth(player.getMaxHealth());
         player.setFoodLevel(20);
+        player.setFireTicks(1);
         player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
+        player.getInventory().setArmorContents(new ItemStack[4]);
         player.setExp(0);
+        player.setLevel(0);
         player.getActivePotionEffects()
                 .stream()
                 .map(PotionEffect::getType)

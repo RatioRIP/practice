@@ -75,7 +75,7 @@ public class ScoreboardUpdater {
                 lines.add("&cOpponents:");
 
                 opponents.forEach(opponent -> {
-                    opponent.players.forEach(it -> {
+                    opponent.getPlayers().forEach(it -> {
                         lines.add("  - &c" + it.getName());
                     });
                 });

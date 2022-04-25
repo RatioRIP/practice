@@ -78,7 +78,7 @@ public class Match {
 
         // teleport all teams to their spawnpoints
         locations.forEach((team, location) -> {
-            team.players.forEach(player -> player.teleport(location));
+            team.getPlayers().forEach(player -> player.teleport(location));
         });
 
         // get the players ready
@@ -124,6 +124,8 @@ public class Match {
      */
 
     public void stop(StopReason reason, Team winner, List<Team> losers) {
+        this.state = MatchState.ENDING;
+
         // if the match was stopped due to an error, inform the players
         if (reason == StopReason.ERROR) {
             this.msg("&cThe match has stopped due to an error");
@@ -264,7 +266,7 @@ public class Match {
     public boolean isTeamEliminated(Team team) {
         return team.players
                 .stream()
-                .allMatch(player -> this.isEliminated(player.getUniqueId()));
+                .allMatch(this::isEliminated);
     }
 
     /**
@@ -284,8 +286,7 @@ public class Match {
         StreamEx<Player> stream = StreamEx.empty();
 
         for (Team team : this.teams) {
-            stream = stream.append(team.players);
-            System.out.println(team.players);
+            stream = stream.append(team.getAlivePlayers(this));
         }
 
         return stream.collect(Collectors.toList());
@@ -312,7 +313,7 @@ public class Match {
     @Nullable
     public Team getTeam(UUID uuid) {
         return this.teams.stream()
-                .filter(team -> team.players.stream().anyMatch(player -> player.getUniqueId().equals(uuid)))
+                .filter(team -> team.players.stream().anyMatch(player -> player.equals(uuid)))
                 .findFirst()
                 .orElse(null);
     }

@@ -1,7 +1,9 @@
 package cc.ratio.practice.match.team;
 
 import cc.ratio.practice.match.Match;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -9,10 +11,10 @@ import java.util.stream.Collectors;
 
 public class Team {
 
-    public final Collection<Player> players;
+    public final Collection<UUID> players;
     public boolean eliminated = false;
 
-    public Team(Collection<Player> players) {
+    public Team(Collection<UUID> players) {
         this.players = players;
     }
 
@@ -22,8 +24,10 @@ public class Team {
      * @return a string of a list of player names
      */
     public String formatName(ChatColor color) {
-        return this.players.stream()
-                .map(Player::getName)
+        return this.players
+                .stream()
+                .map(Bukkit::getOfflinePlayer)
+                .map(OfflinePlayer::getName)
                 .map(s -> color + s)
                 .collect(Collectors.joining(ChatColor.GRAY + ", "));
     }
@@ -34,7 +38,10 @@ public class Team {
      * @return a stream of the players
      */
     public Collection<Player> getPlayers() {
-        return this.players;
+        return this.players
+                .stream()
+                .map(Bukkit::getPlayer)
+                .collect(Collectors.toList());
     }
 
     /**

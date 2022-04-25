@@ -91,12 +91,7 @@ public class Match {
 
             Profile profile = profileOptional.get();
 
-            profile.state = ProfileState.PLAYING;
-            profile.queue = null;
-            profile.match = Match.this;
-
-            PlayerUtilities.reset(player);
-            this.kit.apply(player);
+            profile.matchInit(Match.this);
         });
 
         // countdown
@@ -142,6 +137,8 @@ public class Match {
             this.msg("&cThis match has been forcefully stopped");
         }
 
+        matchRepository.matches.remove(this);
+
         // if the match ended, send the statistics
         if (reason == StopReason.END) {
             List<String> message = new ArrayList<>();
@@ -171,13 +168,10 @@ public class Match {
 
         // teleport all players to the lobby
         this.getAllProfiles().forEach(profile -> {
-            profile.state = ProfileState.LOBBY;
-
-            profile.lobbyInit();
             profile.teleportToLobby();
+            profile.lobbyInit();
         });
 
-        matchRepository.matches.remove(this);
     }
 
 
@@ -196,7 +190,7 @@ public class Match {
         if(killer.isPresent()) {
             this.msg("&c" + Bukkit.getPlayer(uuid).getName() + " was killed by " + Bukkit.getPlayer(killer.get()).getName());
         } else {
-            this.msg("&c" + Bukkit.getPlayer(uuid).getName() + " disconnected");
+            this.msg("&c" + Bukkit.getPlayer(uuid).getName() + " " + (Bukkit.getPlayer(uuid) == null ? "disconnected" : "died"));
         }
 
         if(this.canEnd()) {

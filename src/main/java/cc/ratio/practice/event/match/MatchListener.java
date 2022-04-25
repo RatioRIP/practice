@@ -7,6 +7,7 @@ import cc.ratio.practice.profile.Profile;
 import cc.ratio.practice.profile.ProfileRepository;
 import cc.ratio.practice.profile.ProfileState;
 import me.lucko.helper.Events;
+import me.lucko.helper.Schedulers;
 import me.lucko.helper.Services;
 import me.lucko.helper.event.filter.EventFilters;
 import me.lucko.helper.event.filter.EventHandlers;
@@ -32,13 +33,13 @@ public class MatchListener implements TerminableModule {
 
     @Override
     public void setup(@Nonnull TerminableConsumer consumer) {
-        // cancel move event if game hasn't started yet
-        Events.subscribe(PlayerMoveEvent.class)
-                .filter(EventFilters.ignoreSameBlock())
-                .filter(event -> this.inMatch(event.getPlayer().getUniqueId()))
-                .filter(event -> this.getMatch(event.getPlayer().getUniqueId()).state == MatchState.STARTING)
-                .handler(event -> event.setTo(event.getFrom()))
-                .bindWith(consumer);
+//        // cancel move event if game hasn't started yet
+//        Events.subscribe(PlayerMoveEvent.class)
+//                .filter(EventFilters.ignoreSameBlock())
+//                .filter(event -> this.inMatch(event.getPlayer().getUniqueId()))
+//                .filter(event -> this.getMatch(event.getPlayer().getUniqueId()).state == MatchState.STARTING)
+//                .handler(event -> event.setTo(event.getFrom()))
+//                .bindWith(consumer);
 
 
         Events.subscribe(PlayerDeathEvent.class)
@@ -46,20 +47,24 @@ public class MatchListener implements TerminableModule {
                 .filter(event -> this.getMatch(event.getEntity().getUniqueId()).state == MatchState.PLAYING)
                 .handler(event -> {
                     Player player = event.getEntity();
+                    Profile profile = profileRepository.findOrNull(player.getUniqueId());
                     Match match = this.getMatch(player.getUniqueId());
 
                     event.setDeathMessage(null);
                     event.setDroppedExp(0);
+                    event.getDrops().clear();
 
-                    player.spigot().respawn();
+                    Schedulers.sync().runLater(() -> {
+                        if(event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                            Player killer = (Player) ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
 
-                    if(event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-                        Player killer = (Player) ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
+                            match.eliminate(player.getUniqueId(), Optional.of(killer.getUniqueId()));
+                        } else {
+                            match.eliminate(player.getUniqueId(), Optional.empty());
+                        }
 
-                        match.eliminate(player.getUniqueId(), Optional.of(killer.getUniqueId()));
-                    } else {
-                        match.eliminate(player.getUniqueId(), Optional.empty());
-                    }
+                        player.spigot().respawn();
+                    }, 5L);
 
                 })
                 .bindWith(consumer);
@@ -101,11 +106,8 @@ public class MatchListener implements TerminableModule {
     }
 
     private Match getMatch(UUID uuid) {
-        if (!this.inMatch(uuid)) {
-            return null;
-        }
-
         Profile profile = profileRepository.find(uuid).get();
+
         return profile.match;
     }
 }

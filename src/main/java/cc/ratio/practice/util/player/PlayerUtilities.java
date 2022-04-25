@@ -14,6 +14,7 @@ public class PlayerUtilities {
      */
 
     public static void reset(Player player) {
+        player.setGameMode(GameMode.SURVIVAL);
         player.setHealth(player.getMaxHealth());
         player.setFoodLevel(20);
         player.setFireTicks(1);
@@ -25,6 +26,5 @@ public class PlayerUtilities {
                 .stream()
                 .map(PotionEffect::getType)
                 .forEach(player::removePotionEffect);
-        player.setGameMode(GameMode.SURVIVAL);
     }
 }

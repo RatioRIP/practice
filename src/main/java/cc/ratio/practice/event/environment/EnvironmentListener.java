@@ -98,6 +98,8 @@ public class EnvironmentListener implements TerminableModule {
                 .handler(event -> {
                     Profile profile = profileRepository.findOrNull(event.getPlayer().getUniqueId());
 
+                    System.out.println("gadf");
+
                     profile.teleportToLobby();
                     profile.lobbyInit();
                 })

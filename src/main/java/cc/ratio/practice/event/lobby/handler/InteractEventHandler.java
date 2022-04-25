@@ -35,12 +35,9 @@ public class InteractEventHandler implements Consumer<PlayerInteractEvent> {
         if (item.isSimilar(LobbyItems.LEAVE_QUEUE_ITEM)) {
             Profile profile = profileRepository.findOrNull(player.getUniqueId());
 
-            profile.queue.remove(profile.toPlayer());
-            profile.queue = null;
-            profile.state = ProfileState.LOBBY;
+            profile.lobbyInit();
 
             player.sendMessage(Text.colorize("&cYou've left the queue."));
-            profile.lobbyInit();
         }
     }
 }

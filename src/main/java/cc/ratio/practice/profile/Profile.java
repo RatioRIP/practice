@@ -6,6 +6,7 @@ import cc.ratio.practice.profile.account.Account;
 import cc.ratio.practice.queue.Queue;
 import cc.ratio.practice.scoreboard.ScoreboardUpdater;
 import cc.ratio.practice.util.player.PlayerUtilities;
+import me.lucko.helper.Schedulers;
 import me.lucko.helper.Services;
 import me.lucko.helper.mongo.Mongo;
 import me.lucko.helper.mongo.external.morphia.Datastore;
@@ -116,6 +117,8 @@ public class Profile {
      * Give the player the items for the lobby state
      */
     public void lobbyInit() {
+        System.out.println("lobby init for " + this.toPlayer().getName());
+
         this.state = ProfileState.LOBBY;
         this.queue = null;
         this.match = null;
@@ -125,18 +128,23 @@ public class Profile {
         LobbyItems.LOBBY_ITEMS.forEach((slot, item) -> {
             this.toPlayer().getInventory().setItem(slot, item);
         });
+
+        this.toPlayer().updateInventory();
     }
 
     /**
      * Give the player the items for the queue state
      */
     public void queueInit(Queue queue) {
+        System.out.println("queue init for " + this.toPlayer().getName());
+
         this.state = ProfileState.QUEUE;
         this.queue = queue;
-
-        queue.add(this.toPlayer());
+        this.match = null;
 
         PlayerUtilities.reset(this.toPlayer());
+
+        queue.add(this.toPlayer());
 
         LobbyItems.QUEUE_ITEMS.forEach((slot, item) -> {
             this.toPlayer().getInventory().setItem(slot, item);
@@ -145,6 +153,25 @@ public class Profile {
         String rankity = queue.ranked ? "&cRanked" : "&bUnranked";
 
         this.msg("&eYou've joined the " + rankity + " &f" + queue.kit.name + " &equeue.");
+    }
+
+    /**
+     *
+     */
+    public void matchInit(Match match) {
+        System.out.println("match init for " + this.toPlayer().getName());
+
+        this.state = ProfileState.PLAYING;
+        this.queue = null;
+        this.match = match;
+
+        Player player = this.toPlayer();
+
+        PlayerUtilities.reset(player);
+
+        Schedulers.async().runLater(() -> {
+            match.kit.apply(player);
+        }, 10L);
     }
 
     /**
@@ -181,4 +208,5 @@ public class Profile {
     public void setGamemode(GameMode gameMode) {
         Bukkit.getPlayer(this.uuid).setGameMode(gameMode);
     }
+
 }

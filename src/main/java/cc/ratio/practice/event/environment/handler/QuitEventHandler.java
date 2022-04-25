@@ -27,9 +27,10 @@ public class QuitEventHandler implements Consumer<PlayerQuitEvent> {
             profile.queue = null;
         }
 
-        if(profile.match != null && profile.state == ProfileState.PLAYING) {
+        if(profile.match != null) {
             UUID loser = playerQuitEvent.getPlayer().getUniqueId();
             Match match = profile.match;
+
             profile.match = null;
 
             match.eliminate(profile.uuid, Optional.empty());

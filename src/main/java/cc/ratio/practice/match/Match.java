@@ -82,13 +82,19 @@ public class Match {
         });
 
         // get the players ready
-        this.getAllProfiles().forEach(profile -> {
+        this.getAllPlayers().forEach(player -> {
+            Optional<Profile> profileOptional = profileRepository.find(player.getUniqueId());
+
+            if(!profileOptional.isPresent()) {
+                return;
+            }
+
+            Profile profile = profileOptional.get();
+
             profile.state = ProfileState.PLAYING;
             profile.queue = null;
             profile.match = Match.this;
-        });
 
-        this.getAllPlayers().forEach(player -> {
             PlayerUtilities.reset(player);
             this.kit.apply(player);
         });

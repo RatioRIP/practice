@@ -43,6 +43,7 @@ public class MatchListener implements TerminableModule {
 
         Events.subscribe(PlayerDeathEvent.class)
                 .filter(event -> this.inMatch(event.getEntity().getUniqueId()))
+                .filter(event -> this.getMatch(event.getEntity().getUniqueId()).state == MatchState.PLAYING)
                 .handler(event -> {
                     Player player = event.getEntity();
                     Match match = this.getMatch(player.getUniqueId());
